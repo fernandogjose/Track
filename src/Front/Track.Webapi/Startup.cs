@@ -10,31 +10,30 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Track.DI;
 
-namespace Track.Webapi
-{
-    public class Startup
-    {
-        public Startup(IConfiguration configuration)
-        {
+namespace Track.Webapi {
+    public class Startup {
+
+        public Startup (IConfiguration configuration) {
             Configuration = configuration;
         }
 
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
-        {
-            Bootstrap.Configure (services);
+        public void ConfigureServices (IServiceCollection services) {
+            string mongoServerName = Configuration["DataMongo:DefaultConnection:ServerName"];
+            string mongoDatabase = Configuration["DataMongo:DefaultConnection:Database"];
+            string sqlConnection = Configuration["SQL:DefaultConnection:Database"];
+
+            Bootstrap.Configure (services, mongoServerName, mongoDatabase, sqlConnection);
             services.AddCors ();
-            services.AddMvc();
+            services.AddMvc ();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
-        {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
+        public void Configure (IApplicationBuilder app, IHostingEnvironment env) {
+            if (env.IsDevelopment ()) {
+                app.UseDeveloperExceptionPage ();
             }
 
             app.UseCors (
@@ -45,7 +44,7 @@ namespace Track.Webapi
                 .AllowAnyOrigin ()
             );
 
-            app.UseMvc();
+            app.UseMvc ();
         }
     }
 }

@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Track.Domain.ConfigurationData.Models;
 
 namespace Track.Domain.ConfigurationData.Interfaces.MongoRepositories 
@@ -6,6 +7,6 @@ namespace Track.Domain.ConfigurationData.Interfaces.MongoRepositories
     {
         string GetByKey (string key);
 
-        void Add (ConfigurationDataRequest configurationDataRequest);
+        Task Add (Configuration configuration);
     }
 }
