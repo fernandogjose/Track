@@ -1,3 +1,9 @@
+using System;
+using System.Net;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
+
 namespace Track.Webapi.Middlewares
 {
     public class ErrorMiddleware
@@ -20,8 +26,8 @@ namespace Track.Webapi.Middlewares
             var code = HttpStatusCode.InternalServerError;
 
             if (exception is ArgumentException) code = HttpStatusCode.BadRequest;
-            else if (exception is AuthException) code = HttpStatusCode.Unauthorized;
-            else if (exception is CustomException) code = ((CustomException) exception).HttpStatusCode;
+            // else if (exception is AuthException) code = HttpStatusCode.Unauthorized;
+            // else if (exception is CustomException) code = ((CustomException) exception).HttpStatusCode;
 
             //--- Fernando - Logar a Exception no MongoDB
 

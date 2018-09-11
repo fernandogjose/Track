@@ -24,7 +24,6 @@
       "Track.Webapi/1.0.0": {
         "dependencies": {
           "Microsoft.AspNetCore.All": "2.0.9",
-          "Microsoft.Extensions.DependencyInjection": "2.1.1",
           "Microsoft.NETCore.App": "2.0.0",
           "Track.DI": "1.0.0",
           "Track.Domain": "1.0.0"

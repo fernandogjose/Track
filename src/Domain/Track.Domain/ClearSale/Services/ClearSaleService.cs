@@ -13,6 +13,8 @@ namespace Track.Domain.ClearSale.Services {
         private bool IsToSendDataLogin () {
             //--- obter do mongodb
             // string isToSendDataLogin = 
+
+            return true;
         }
 
         public SendDataLoginResponse SendDataLogin (SendDataLoginRequest sendDataLoginRequest) {
