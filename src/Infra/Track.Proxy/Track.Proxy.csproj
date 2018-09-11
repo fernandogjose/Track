@@ -6,7 +6,6 @@
 
   <ItemGroup>
     <ProjectReference Include="../../Domain/Track.Domain/Track.Domain.csproj" />
-    <ProjectReference Include="../../Infra/Track.Data.Sql/Track.Data.Sql.csproj" />
   </ItemGroup>  
 
 </Project>

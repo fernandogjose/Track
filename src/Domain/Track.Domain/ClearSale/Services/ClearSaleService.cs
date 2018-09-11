@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Track.Domain.ClearSale.Interfaces.Proxies;
 using Track.Domain.ClearSale.Interfaces.Services;
 using Track.Domain.ClearSale.Models;
@@ -17,9 +18,9 @@ namespace Track.Domain.ClearSale.Services {
             return true;
         }
 
-        public Task<SendDataLoginResponse> SendDataLoginAsync (SendDataLoginRequest sendDataLoginRequest) {
+        public async Task<SendDataLoginResponse> SendDataLoginAsync (SendDataLoginRequest sendDataLoginRequest) {
 
-            SendDataLoginResponse sendDataLoginResponse = _clearSaleProxy.SendDataLogin (sendDataLoginRequest);
+            SendDataLoginResponse sendDataLoginResponse = await _clearSaleProxy.SendDataLoginAsync (sendDataLoginRequest);
             return sendDataLoginResponse;
         }
     }
