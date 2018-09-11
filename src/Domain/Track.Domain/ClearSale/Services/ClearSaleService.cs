@@ -17,7 +17,7 @@ namespace Track.Domain.ClearSale.Services {
             return true;
         }
 
-        public SendDataLoginResponse SendDataLogin (SendDataLoginRequest sendDataLoginRequest) {
+        public Task<SendDataLoginResponse> SendDataLogin (SendDataLoginRequest sendDataLoginRequest) {
 
             SendDataLoginResponse sendDataLoginResponse = _clearSaleProxy.SendDataLogin (sendDataLoginRequest);
             return sendDataLoginResponse;
