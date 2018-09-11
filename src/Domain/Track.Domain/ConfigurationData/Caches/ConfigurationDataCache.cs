@@ -57,7 +57,7 @@ namespace Track.Domain.ConfigurationData.Caches {
 
         private string ValidateExpirationDate (string valueCached, int addMinutes) {
             Configuration configurationData = JsonConvert.DeserializeObject<Configuration> (valueCached);
-            return configurationData.DataMudanca.AddMinutes (addMinutes) < DateTime.Now ? "" : valueCached;
+            return Convert.ToDateTime(configurationData.DataMudanca).AddMinutes (addMinutes) < DateTime.Now ? "" : valueCached;
         }
 
         private void AddCache (Configuration configuration, string key) {

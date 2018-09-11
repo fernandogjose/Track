@@ -36,11 +36,11 @@ namespace Track.Data.Mongo.Repositories {
             return configurationData;
         }
 
-        public async Task Add (Configuration configurationData) {
+        public async Task Add (Configuration configuration) {
             IMongoCollection<BsonDocument> collection = _database.GetCollection<BsonDocument> ("DadosConfiguracao");
-            BsonDocument configurationDataBsonDocument = configurationData.ToBsonDocument ();
-            collection.DeleteOne (Builders<BsonDocument>.Filter.Eq ("Nome", configurationData.Nome));
-            await collection.InsertOneAsync (configurationData.ToBsonDocument ());
+            BsonDocument configurationDataBsonDocument = configuration.ToBsonDocument ();
+            collection.DeleteOne (Builders<BsonDocument>.Filter.Eq ("Nome", configuration.Nome));
+            await collection.InsertOneAsync (configuration.ToBsonDocument ());
         }
     }
 }
