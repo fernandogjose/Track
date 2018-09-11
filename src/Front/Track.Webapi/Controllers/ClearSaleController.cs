@@ -19,7 +19,7 @@ namespace Track.Webapi.Controllers
         }
 
         [HttpPost]
-        public Task<SendDataLoginResponse> SendDataLogin(SendDataLoginRequest sendDataLoginRequest)
+        public Task<SendDataLoginResponse> SendDataLoginAsync(SendDataLoginRequest sendDataLoginRequest)
         {
             return _clearSaleService.SendDataLogin(sendDataLoginRequest);
         }
