@@ -1,0 +1,14 @@
+/src/Domain/Track.Domain/bin/
+/src/Domain/Track.Domain/obj/
+
+/src/Front/Track.WebApi/bin/
+/src/Front/Track.WebApi/obj/
+
+/src/Infra/Track.Data.Sql/bin/
+/src/Infra/Track.Data.Sql/obj/
+
+/src/Infra/Track.DI/bin/
+/src/Infra/Track.DI/obj/
+
+/src/Infra/Track.Proxy/bin/
+/src/Infra/Track.Proxy/obj/
