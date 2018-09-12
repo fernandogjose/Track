@@ -19,55 +19,54 @@ namespace Track.XUnit {
 
     public class ClearSaleTest {
 
-        private readonly Mock<IClearSaleProxy> _clearsaleProxyMock;
+        private readonly IServiceCollection _serviceCollection;
 
-        private readonly Mock<IConfigurationDataMongoRepository> _mongoRepositoryMock;
+        private readonly Mock<IClearSaleProxy> _clearSaleProxyMock;
+
+        private readonly Mock<IConfigurationDataMongoRepository> _configurationDataMongoRepositoryMock;
 
         private readonly Mock<ConfigurationDataCache> _configurationDataCacheMock;
 
-        private readonly ClearSaleService _clearSaleService;
+        private readonly Mock<IConfigurationDataSqlRepository> _configurationDataSqlRepositoryMock;
 
-        private readonly Mock<IConfigurationDataSqlRepository> _sqlRepositoryMock;
-
-        private readonly IServiceCollection _serviceCollection;
-
-        //IMemoryCache memoryCache, IConfigurationDataMongoRepository configurationDataMongoRepository, IConfigurationDataSqlRepository configurationDataSqlRepository
+        private readonly IClearSaleService _clearSaleService;
 
         public ClearSaleTest () {
+            //--- mock
+            _clearSaleProxyMock = new Mock<IClearSaleProxy>();
+            _configurationDataMongoRepositoryMock = new Mock<IConfigurationDataMongoRepository>();
+            _configurationDataSqlRepositoryMock = new Mock<IConfigurationDataSqlRepository>();
+            _configurationDataCacheMock = new Mock<ConfigurationDataCache>();            
 
-            _clearsaleProxyMock = new Mock<IClearSaleProxy> ();
-            _mongoRepositoryMock = new Mock<IConfigurationDataMongoRepository> ();
-            _configurationDataCacheMock = new Mock<ConfigurationDataCache> ();
-
-            _serviceCollection = new ServiceCollection ();
-            _serviceCollection.AddSingleton<IClearSaleProxy> (_clearsaleProxyMock.Object);
-            _serviceCollection.AddSingleton<IConfigurationDataMongoRepository> (p => new ConfigurationDataMongoRepository ("mongoServerName", "mongoDatabase"));
-            _serviceCollection.AddSingleton<ConfigurationDataCache> ();
-
-            var services = _serviceCollection.BuildServiceProvider ();
-            _clearSaleService = services.GetService<ClearSaleService> ();
+            //--- configuração do DI
+            _serviceCollection = new ServiceCollection();
+            _serviceCollection.AddMemoryCache();
+            _serviceCollection.AddSingleton<IClearSaleProxy>(_clearSaleProxyMock.Object);
+            _serviceCollection.AddSingleton<IConfigurationDataMongoRepository>(_configurationDataMongoRepositoryMock.Object);
+            _serviceCollection.AddSingleton<IConfigurationDataSqlRepository>(_configurationDataSqlRepositoryMock.Object);
+            _serviceCollection.AddSingleton<ConfigurationDataCache>();
+            _serviceCollection.AddSingleton<IClearSaleService, ClearSaleService>();
+            
+            //--- obter o service
+            var services = _serviceCollection.BuildServiceProvider();
+            _clearSaleService = services.GetService<IClearSaleService>();
         }
 
         [Fact]
         public void EnviarRequestVazio () {
             SendDataLoginRequest sendDataLoginRequest = new SendDataLoginRequest ();
 
-            int expectedStatusCode = 200;
+            int expectedStatusCode = 200;           
 
-            try {
+            // _configurationDataCacheMock
+            //     .Setup (r => r.GetByKey ("PodeExecutarClearSale"))
+            //     .Returns (new Configuration {
+            //         Nome = "PodeExecutarClearSale",
+            //         Valor = "true"
+            //     });
 
-                _configurationDataCacheMock
-                    .Setup (r => r.GetByKey ("PodeExecutarClearSale"))
-                    .Returns (new Configuration {
-                        Nome = "PodeExecutarClearSale",
-                        Valor = "true"
-                    });
-
-                var retorno = _clearSaleService.SendDataLoginAsync (sendDataLoginRequest);
-            } catch (Exception ex) {
-                var teste = ex;
-            }
-
+            var retorno = _clearSaleService.SendDataLoginAsync (sendDataLoginRequest);
+           
             Assert.Equal (200, expectedStatusCode);
         }
     }
