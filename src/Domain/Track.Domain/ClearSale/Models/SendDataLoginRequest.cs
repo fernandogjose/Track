@@ -1,7 +1,7 @@
-namespace Track.Domain.ClearSale.Models
+namespace Track.Domain.ClearSale.Models 
 {
-    public class SendDataLoginRequest
+    public class SendDataLoginRequest 
     {
-        
+        public Account Account { get; set; }
     }
 }

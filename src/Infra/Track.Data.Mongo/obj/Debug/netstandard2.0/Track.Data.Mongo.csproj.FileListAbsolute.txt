@@ -10,3 +10,15 @@ C:\p\Track\src\Infra\Track.Data.Mongo\bin\Debug\netstandard2.0\Track.Domain.pdb
 C:\p\Track\src\Infra\Track.Data.Mongo\obj\Debug\netstandard2.0\Track.Data.Mongo.csproj.CopyComplete
 C:\p\Track\src\Infra\Track.Data.Mongo\obj\Debug\netstandard2.0\Track.Data.Mongo.dll
 C:\p\Track\src\Infra\Track.Data.Mongo\obj\Debug\netstandard2.0\Track.Data.Mongo.pdb
+C:\t\GPA\apis\track\Track\src\Infra\Track.Data.Mongo\bin\Debug\netstandard2.0\Track.Data.Mongo.deps.json
+C:\t\GPA\apis\track\Track\src\Infra\Track.Data.Mongo\bin\Debug\netstandard2.0\Track.Data.Mongo.dll
+C:\t\GPA\apis\track\Track\src\Infra\Track.Data.Mongo\bin\Debug\netstandard2.0\Track.Data.Mongo.pdb
+C:\t\GPA\apis\track\Track\src\Infra\Track.Data.Mongo\bin\Debug\netstandard2.0\Track.Domain.dll
+C:\t\GPA\apis\track\Track\src\Infra\Track.Data.Mongo\bin\Debug\netstandard2.0\Track.Domain.pdb
+C:\t\GPA\apis\track\Track\src\Infra\Track.Data.Mongo\obj\Debug\netstandard2.0\Track.Data.Mongo.csprojResolveAssemblyReference.cache
+C:\t\GPA\apis\track\Track\src\Infra\Track.Data.Mongo\obj\Debug\netstandard2.0\Track.Data.Mongo.csproj.CoreCompileInputs.cache
+C:\t\GPA\apis\track\Track\src\Infra\Track.Data.Mongo\obj\Debug\netstandard2.0\Track.Data.Mongo.AssemblyInfoInputs.cache
+C:\t\GPA\apis\track\Track\src\Infra\Track.Data.Mongo\obj\Debug\netstandard2.0\Track.Data.Mongo.AssemblyInfo.cs
+C:\t\GPA\apis\track\Track\src\Infra\Track.Data.Mongo\obj\Debug\netstandard2.0\Track.Data.Mongo.csproj.CopyComplete
+C:\t\GPA\apis\track\Track\src\Infra\Track.Data.Mongo\obj\Debug\netstandard2.0\Track.Data.Mongo.dll
+C:\t\GPA\apis\track\Track\src\Infra\Track.Data.Mongo\obj\Debug\netstandard2.0\Track.Data.Mongo.pdb

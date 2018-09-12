@@ -10,42 +10,35 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Track.DI;
 
-namespace Track.Webapi
-{
-    public class Startup
-    {
-        public Startup(IConfiguration configuration)
-        {
+namespace Track.Webapi {
+    public class Startup {
+        public Startup (IConfiguration configuration) {
             Configuration = configuration;
         }
 
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
-        {
+        public void ConfigureServices (IServiceCollection services) {
             Bootstrap.Configure (services);
             services.AddCors ();
-            services.AddMvc();
+            services.AddMvc ();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
-        {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
+        public void Configure (IApplicationBuilder app, IHostingEnvironment env) {
+            if (env.IsDevelopment ()) {
+                app.UseDeveloperExceptionPage ();
             }
 
             app.UseCors (
-                options => options.WithOrigins ("//carrinho.casasbahia.com.br")
-                .WithOrigins ("//www.casasbahia.com.br")
+                options => options
+                .AllowAnyOrigin ()
                 .AllowAnyHeader ()
                 .AllowAnyMethod ()
-                .AllowAnyOrigin ()
             );
 
-            app.UseMvc();
+            app.UseMvc ();
         }
     }
 }

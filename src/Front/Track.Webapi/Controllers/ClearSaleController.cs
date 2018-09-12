@@ -7,9 +7,9 @@ using Track.Domain.ClearSale.Interfaces.Services;
 using Track.Domain.ClearSale.Models;
 
 namespace Track.Webapi.Controllers {
-    [Route ("api/[controller]")]
+    [Route ("api/clearsale")]
     public class ClearSaleController : Controller {
-        
+
         private readonly IClearSaleService _clearSaleService;
 
         public ClearSaleController (IClearSaleService clearSaleService) {
@@ -17,9 +17,11 @@ namespace Track.Webapi.Controllers {
         }
 
         [HttpPost]
-        public async Task<SendDataLoginResponse> SendDataLoginAsync (SendDataLoginRequest sendDataLoginRequest) {
+        [Route ("sendDataLoginAsync")]
+        public async Task<SendDataLoginResponse> SendDataLoginAsync ([FromBody] SendDataLoginRequest sendDataLoginRequest) {
             SendDataLoginResponse sendDataLoginResponse = await _clearSaleService.SendDataLoginAsync (sendDataLoginRequest);
             return sendDataLoginResponse;
         }
     }
+
 }

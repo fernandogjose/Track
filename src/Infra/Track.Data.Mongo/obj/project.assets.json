@@ -135,7 +135,7 @@
           "lib/netstandard1.5/MongoDB.Driver.Core.dll": {}
         }
       },
-      "NETStandard.Library/2.0.3": {
+      "NETStandard.Library/2.0.1": {
         "type": "package",
         "dependencies": {
           "Microsoft.NETCore.Platforms": "1.1.0"
@@ -1531,13 +1531,14 @@
         "mongodb.driver.core.nuspec"
       ]
     },
-    "NETStandard.Library/2.0.3": {
-      "sha512": "st47PosZSHrjECdjeIzZQbzivYBJFv6P2nv4cj2ypdI204DO+vZ7l5raGMiX4eXMJ53RfOIg+/s4DHVZ54Nu2A==",
+    "NETStandard.Library/2.0.1": {
+      "sha512": "oA6nwv9MhEKYvLpjZ0ggSpb1g4CQViDVQjLUcDWg598jtvJbpfeP2reqwI1GLW2TbxC/Ml7xL6BBR1HmKPXlTg==",
       "type": "package",
-      "path": "netstandard.library/2.0.3",
+      "path": "netstandard.library/2.0.1",
       "files": [
         "LICENSE.TXT",
         "THIRD-PARTY-NOTICES.TXT",
+        "build/NETStandard.Library.targets",
         "build/netstandard2.0/NETStandard.Library.targets",
         "build/netstandard2.0/ref/Microsoft.Win32.Primitives.dll",
         "build/netstandard2.0/ref/System.AppContext.dll",
@@ -1654,7 +1655,7 @@
         "build/netstandard2.0/ref/netstandard.dll",
         "build/netstandard2.0/ref/netstandard.xml",
         "lib/netstandard1.0/_._",
-        "netstandard.library.2.0.3.nupkg.sha512",
+        "netstandard.library.2.0.1.nupkg.sha512",
         "netstandard.library.nuspec"
       ]
     },
@@ -4793,29 +4794,29 @@
       "MongoDB.Bson >= 2.7.0",
       "MongoDB.Driver >= 2.7.0",
       "MongoDB.Driver.Core >= 2.7.0",
-      "NETStandard.Library >= 2.0.3",
+      "NETStandard.Library >= 2.0.1",
       "Newtonsoft.Json >= 11.0.2",
       "Track.Domain >= 1.0.0"
     ]
   },
   "packageFolders": {
-    "C:\\Users\\fernando.jose\\.nuget\\packages\\": {},
+    "C:\\Users\\vagner.moreira\\.nuget\\packages\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\p\\Track\\src\\Infra\\Track.Data.Mongo\\Track.Data.Mongo.csproj",
+      "projectUniqueName": "C:\\t\\GPA\\apis\\track\\Track\\src\\Infra\\Track.Data.Mongo\\Track.Data.Mongo.csproj",
       "projectName": "Track.Data.Mongo",
-      "projectPath": "C:\\p\\Track\\src\\Infra\\Track.Data.Mongo\\Track.Data.Mongo.csproj",
-      "packagesPath": "C:\\Users\\fernando.jose\\.nuget\\packages\\",
-      "outputPath": "C:\\p\\Track\\src\\Infra\\Track.Data.Mongo\\obj\\",
+      "projectPath": "C:\\t\\GPA\\apis\\track\\Track\\src\\Infra\\Track.Data.Mongo\\Track.Data.Mongo.csproj",
+      "packagesPath": "C:\\Users\\vagner.moreira\\.nuget\\packages\\",
+      "outputPath": "C:\\t\\GPA\\apis\\track\\Track\\src\\Infra\\Track.Data.Mongo\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\fernando.jose\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\vagner.moreira\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -4830,8 +4831,8 @@
       "frameworks": {
         "netstandard2.0": {
           "projectReferences": {
-            "C:\\p\\Track\\src\\Domain\\Track.Domain\\Track.Domain.csproj": {
-              "projectPath": "C:\\p\\Track\\src\\Domain\\Track.Domain\\Track.Domain.csproj"
+            "C:\\t\\GPA\\apis\\track\\Track\\src\\Domain\\Track.Domain\\Track.Domain.csproj": {
+              "projectPath": "C:\\t\\GPA\\apis\\track\\Track\\src\\Domain\\Track.Domain\\Track.Domain.csproj"
             }
           }
         }
@@ -4860,7 +4861,7 @@
           "NETStandard.Library": {
             "suppressParent": "All",
             "target": "Package",
-            "version": "[2.0.3, )",
+            "version": "[2.0.1, )",
             "autoReferenced": true
           },
           "Newtonsoft.Json": {
