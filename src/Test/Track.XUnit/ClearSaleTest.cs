@@ -56,15 +56,14 @@ namespace Track.XUnit {
         public void EnviarRequestVazio () {
             SendDataLoginRequest sendDataLoginRequest = new SendDataLoginRequest ();
 
-            int expectedStatusCode = 200;           
+            int expectedStatusCode = 200;
 
-            // _configurationDataCacheMock
-            //     .Setup (r => r.GetByKey ("PodeExecutarClearSale"))
-            //     .Returns (new Configuration {
-            //         Nome = "PodeExecutarClearSale",
-            //         Valor = "true"
-            //     });
+            //--- Mock do serviço de cache buscando no mongodb
+            _configurationDataMongoRepositoryMock
+                .Setup (r => r.GetByKey ("PodeExecutarClearSale"))
+                .Returns ("{\"_id\":\"PODEEXECUTARCLEARSALE\",\"IdDadosConfiguracao\":0,\"IdDadosConfiguracaoAmbiente\":0,\"Ambiente\":null,\"IdDadosConfiguracaoAplicacao\":0,\"Aplicacao\":null,\"IdDadosConfiguracaoGrupo\":0,\"Grupo\":null,\"Nome\":\"PodeExecutarClearSale\",\"Valor\":\"true\",\"DataMudanca\":\"2018-09-12T18:44:53.1802692-03:00\",\"FlagEditavel\":false,\"AlteradoPor\":null}");
 
+            //--- enviar os dados para o login
             var retorno = _clearSaleService.SendDataLoginAsync (sendDataLoginRequest);
            
             Assert.Equal (200, expectedStatusCode);
