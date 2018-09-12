@@ -15,4 +15,9 @@
     <DotNetCliToolReference Include="dotnet-xunit" Version="2.3.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="../../Infra/Track.DI/Track.DI.csproj" />
+    <ProjectReference Include="../../Domain/Track.Domain/Track.Domain.csproj" />
+  </ItemGroup>
+
 </Project>

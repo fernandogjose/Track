@@ -5053,11 +5053,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "e:\\Projects\\Track\\src\\Infra\\Track.Data.Mongo\\Track.Data.Mongo.csproj",
+      "projectUniqueName": "E:\\Projects\\Track\\src\\Infra\\Track.Data.Mongo\\Track.Data.Mongo.csproj",
       "projectName": "Track.Data.Mongo",
-      "projectPath": "e:\\Projects\\Track\\src\\Infra\\Track.Data.Mongo\\Track.Data.Mongo.csproj",
+      "projectPath": "E:\\Projects\\Track\\src\\Infra\\Track.Data.Mongo\\Track.Data.Mongo.csproj",
       "packagesPath": "C:\\Users\\arthur.yole.CORPNOVA\\.nuget\\packages\\",
-      "outputPath": "e:\\Projects\\Track\\src\\Infra\\Track.Data.Mongo\\obj\\",
+      "outputPath": "E:\\Projects\\Track\\src\\Infra\\Track.Data.Mongo\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -5078,8 +5078,8 @@
       "frameworks": {
         "netstandard2.0": {
           "projectReferences": {
-            "e:\\Projects\\Track\\src\\Domain\\Track.Domain\\Track.Domain.csproj": {
-              "projectPath": "e:\\Projects\\Track\\src\\Domain\\Track.Domain\\Track.Domain.csproj"
+            "E:\\Projects\\Track\\src\\Domain\\Track.Domain\\Track.Domain.csproj": {
+              "projectPath": "E:\\Projects\\Track\\src\\Domain\\Track.Domain\\Track.Domain.csproj"
             }
           }
         }
