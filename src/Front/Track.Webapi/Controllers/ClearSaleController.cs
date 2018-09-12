@@ -7,10 +7,13 @@ using Track.Domain.ClearSale.Interfaces.Services;
 using Track.Domain.ClearSale.Models;
 
 namespace Track.Webapi.Controllers {
+<<<<<<< HEAD
+=======
 
     /// <summary>
     /// ClearSale API
     /// </summary>
+>>>>>>> 9afc0e547672ac55c318430170f13385e5cfcd56
     [Route ("api/clearsale")]
     public class ClearSaleController : Controller {
 

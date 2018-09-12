@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETStandard,Version=v2.0/",
-    "signature": "ae9603d164a5d23d366295d19886a754c1d14eab"
+    "signature": "7fd47141e0db3807945827e073ff75f1b08e9d7a"
   },
   "compilationOptions": {},
   "targets": {
@@ -23,7 +23,7 @@
       "DnsClient/1.0.7": {
         "dependencies": {
           "Microsoft.Win32.Primitives": "4.3.0",
-          "NETStandard.Library": "2.0.3",
+          "NETStandard.Library": "2.0.1",
           "System.Buffers": "4.4.0",
           "System.Collections": "4.3.0",
           "System.Collections.Concurrent": "4.3.0",
