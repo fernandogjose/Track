@@ -1,25 +1,40 @@
+using System;
+using System.Net;
 using System.Threading.Tasks;
 using Track.Domain.ClearSale.Interfaces.Proxies;
 using Track.Domain.ClearSale.Interfaces.Services;
 using Track.Domain.ClearSale.Models;
+using Track.Domain.ConfigurationData.Caches;
+using Track.Domain.ConfigurationData.Interfaces.MongoRepositories;
+using Track.Domain.ConfigurationData.Models;
+using Track.Domain.Common.Exceptions;
 
 namespace Track.Domain.ClearSale.Services {
     public class ClearSaleService : IClearSaleService {
         private readonly IClearSaleProxy _clearSaleProxy;
 
-        public ClearSaleService (IClearSaleProxy clearSaleProxy) {
+        private readonly IConfigurationDataMongoRepository _configurationDataMongoRepository;
+
+        private readonly ConfigurationDataCache _configurationDataCache;
+
+        public ClearSaleService (IClearSaleProxy clearSaleProxy, IConfigurationDataMongoRepository configurationDataMongoRepository, ConfigurationDataCache configurationDataCache) {
             _clearSaleProxy = clearSaleProxy;
+            _configurationDataMongoRepository = configurationDataMongoRepository;
+            _configurationDataCache = configurationDataCache;
         }
 
-        private bool IsToSendDataLogin () {
-            //--- obter do mongodb
-            // string isToSendDataLogin = 
+        private void IsSendDataLogin () {
 
-            return true;
+            //--- obter do cache (memória -> mongo -> banco)
+            Configuration podeExecutarClearSale = _configurationDataCache.GetByKey ("testef");
+
+            //--- verifica se pode executar, caso contrário retorna um erro de negocio (Não implementado)
+            if (podeExecutarClearSale == null || string.IsNullOrEmpty (podeExecutarClearSale.Valor) || podeExecutarClearSale.Valor != "true")
+                throw new CustomException ("O envio de dados para o ClearSale está desligado", HttpStatusCode.NotImplemented);
         }
 
         public async Task<SendDataLoginResponse> SendDataLoginAsync (SendDataLoginRequest sendDataLoginRequest) {
-
+            IsSendDataLogin ();
             SendDataLoginResponse sendDataLoginResponse = await _clearSaleProxy.SendDataLoginAsync (sendDataLoginRequest);
             return sendDataLoginResponse;
         }

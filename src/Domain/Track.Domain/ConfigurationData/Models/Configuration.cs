@@ -2,7 +2,7 @@ using System;
 
 namespace Track.Domain.ConfigurationData.Models
 {
-    public class ConfigurationDataRequest {
+    public class Configuration {
 
         public string _id { get; set; }
 
