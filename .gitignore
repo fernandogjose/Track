@@ -15,3 +15,6 @@
 
 /src/Infra/Track.Proxy/bin/
 /src/Infra/Track.Proxy/obj/
+
+/src/Test/Track.XUnit/bin/
+/src/Test/Track.XUnit/obj/
