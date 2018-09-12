@@ -3,11 +3,11 @@ using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
+using Track.Domain.Common.Exceptions;
 
-namespace Track.Webapi.Middlewares
-{
-    public class ErrorMiddleware
-    {
+namespace Track.Webapi.Middlewares {
+
+    public class ErrorMiddleware {
         private readonly RequestDelegate next;
 
         public ErrorMiddleware (RequestDelegate next) {
@@ -26,11 +26,9 @@ namespace Track.Webapi.Middlewares
             var code = HttpStatusCode.InternalServerError;
 
             if (exception is ArgumentException) code = HttpStatusCode.BadRequest;
-            // else if (exception is AuthException) code = HttpStatusCode.Unauthorized;
-            // else if (exception is CustomException) code = ((CustomException) exception).HttpStatusCode;
+             else if (exception is CustomException) code = ((CustomException) exception).HttpStatusCode;
 
             //--- Fernando - Logar a Exception no MongoDB
-
             var result = JsonConvert.SerializeObject (new { error = exception.Message });
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = (int) code;
