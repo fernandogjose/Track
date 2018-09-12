@@ -4,8 +4,8 @@
 /src/Front/Track.WebApi/bin/
 /src/Front/Track.WebApi/obj/
 
-/src/Infra/Track.Data.Mongo.Sql/bin/
-/src/Infra/Track.Data.Mongo.Sql/obj/
+# /src/Infra/Track.Data.Mongo.Sql/bin/
+# /src/Infra/Track.Data.Mongo.Sql/obj/
 
 /src/Infra/Track.Data.Sql/bin/
 /src/Infra/Track.Data.Sql/obj/
