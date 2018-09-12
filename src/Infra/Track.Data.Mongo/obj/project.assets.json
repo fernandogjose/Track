@@ -5047,23 +5047,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\fernando.jose\\.nuget\\packages\\": {},
+    "C:\\Users\\arthur.yole.CORPNOVA\\.nuget\\packages\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\p\\Track\\src\\Infra\\Track.Data.Mongo\\Track.Data.Mongo.csproj",
+      "projectUniqueName": "e:\\Projects\\Track\\src\\Infra\\Track.Data.Mongo\\Track.Data.Mongo.csproj",
       "projectName": "Track.Data.Mongo",
-      "projectPath": "C:\\p\\Track\\src\\Infra\\Track.Data.Mongo\\Track.Data.Mongo.csproj",
-      "packagesPath": "C:\\Users\\fernando.jose\\.nuget\\packages\\",
-      "outputPath": "C:\\p\\Track\\src\\Infra\\Track.Data.Mongo\\obj\\",
+      "projectPath": "e:\\Projects\\Track\\src\\Infra\\Track.Data.Mongo\\Track.Data.Mongo.csproj",
+      "packagesPath": "C:\\Users\\arthur.yole.CORPNOVA\\.nuget\\packages\\",
+      "outputPath": "e:\\Projects\\Track\\src\\Infra\\Track.Data.Mongo\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\fernando.jose\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\arthur.yole.CORPNOVA\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -5078,8 +5078,8 @@
       "frameworks": {
         "netstandard2.0": {
           "projectReferences": {
-            "C:\\p\\Track\\src\\Domain\\Track.Domain\\Track.Domain.csproj": {
-              "projectPath": "C:\\p\\Track\\src\\Domain\\Track.Domain\\Track.Domain.csproj"
+            "e:\\Projects\\Track\\src\\Domain\\Track.Domain\\Track.Domain.csproj": {
+              "projectPath": "e:\\Projects\\Track\\src\\Domain\\Track.Domain\\Track.Domain.csproj"
             }
           }
         }

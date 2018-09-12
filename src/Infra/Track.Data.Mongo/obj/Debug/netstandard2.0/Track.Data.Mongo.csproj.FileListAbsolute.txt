@@ -22,3 +22,15 @@ C:\t\GPA\apis\track\Track\src\Infra\Track.Data.Mongo\obj\Debug\netstandard2.0\Tr
 C:\t\GPA\apis\track\Track\src\Infra\Track.Data.Mongo\obj\Debug\netstandard2.0\Track.Data.Mongo.csproj.CopyComplete
 C:\t\GPA\apis\track\Track\src\Infra\Track.Data.Mongo\obj\Debug\netstandard2.0\Track.Data.Mongo.dll
 C:\t\GPA\apis\track\Track\src\Infra\Track.Data.Mongo\obj\Debug\netstandard2.0\Track.Data.Mongo.pdb
+e:\Projects\Track\src\Infra\Track.Data.Mongo\bin\Debug\netstandard2.0\Track.Data.Mongo.deps.json
+e:\Projects\Track\src\Infra\Track.Data.Mongo\bin\Debug\netstandard2.0\Track.Data.Mongo.dll
+e:\Projects\Track\src\Infra\Track.Data.Mongo\bin\Debug\netstandard2.0\Track.Data.Mongo.pdb
+e:\Projects\Track\src\Infra\Track.Data.Mongo\bin\Debug\netstandard2.0\Track.Domain.dll
+e:\Projects\Track\src\Infra\Track.Data.Mongo\bin\Debug\netstandard2.0\Track.Domain.pdb
+e:\Projects\Track\src\Infra\Track.Data.Mongo\obj\Debug\netstandard2.0\Track.Data.Mongo.csprojAssemblyReference.cache
+e:\Projects\Track\src\Infra\Track.Data.Mongo\obj\Debug\netstandard2.0\Track.Data.Mongo.csproj.CoreCompileInputs.cache
+e:\Projects\Track\src\Infra\Track.Data.Mongo\obj\Debug\netstandard2.0\Track.Data.Mongo.AssemblyInfoInputs.cache
+e:\Projects\Track\src\Infra\Track.Data.Mongo\obj\Debug\netstandard2.0\Track.Data.Mongo.AssemblyInfo.cs
+e:\Projects\Track\src\Infra\Track.Data.Mongo\obj\Debug\netstandard2.0\Track.Data.Mongo.csproj.CopyComplete
+e:\Projects\Track\src\Infra\Track.Data.Mongo\obj\Debug\netstandard2.0\Track.Data.Mongo.dll
+e:\Projects\Track\src\Infra\Track.Data.Mongo\obj\Debug\netstandard2.0\Track.Data.Mongo.pdb
