@@ -54,5 +54,10 @@ namespace Track.Domain.ClearSale.Services {
             SendDataLoginResponse sendDataLoginResponse = await _clearSaleProxy.SendDataLoginAsync (sendDataLoginRequest);
             return sendDataLoginResponse;
         }
+
+        public Task<SendDataLoginResponse> SendDataAccountAsync(SendDataAccountRequest sendDataAccountRequest)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

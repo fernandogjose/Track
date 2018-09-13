@@ -6,5 +6,7 @@ namespace Track.Domain.ClearSale.Interfaces.Services
     public interface IClearSaleService 
     {        
         Task<SendDataLoginResponse> SendDataLoginAsync (SendDataLoginRequest sendDataLoginRequest);
+
+        Task<SendDataLoginResponse> SendDataAccountAsync (SendDataAccountRequest sendDataAccountRequest);
     }
 }
