@@ -17,5 +17,6 @@ namespace Track.Domain.ClearSale.Models {
         public string OptinEmail { get; set; }
         public string OptinMobile { get; set; }
         public List<Address> Addresses { get; set; }
+        public List<Phones> Phones { get; set; }
     }
 }
