@@ -68,8 +68,8 @@ namespace Track.XUnit {
         private async Task<SendDataLoginResponse> GetSendDataLoginResponse () {
             SendDataLoginResponse sendDataLoginResponse = new SendDataLoginResponse {
                 RequestId = "ssddad",
-                Account = new SendDataLoginAccountResponse {
-                Code = "123456"
+                Account = new SendDataLoginAccount {
+                    Code = "123456"
                 }
             };
 
@@ -79,7 +79,7 @@ namespace Track.XUnit {
         [Fact]
         public void MustReturnCustomExceptionWhenKeyPodeExecutarClearsaleIsFalse () {
             SendDataLoginRequest sendDataLoginRequest = new SendDataLoginRequest {
-                
+
             };
             // Task<SendDataLoginResponse> sendDataLoginResponse =  teste();
 
@@ -112,7 +112,7 @@ namespace Track.XUnit {
         [Fact]
         public void MustReturnCustomExceptionWhenKeyPodeExecutarClearsaleIsNull () {
             SendDataLoginRequest sendDataLoginRequest = new SendDataLoginRequest {
-                
+
             };
             // Task<SendDataLoginResponse> sendDataLoginResponse =  teste();
 

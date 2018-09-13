@@ -34,7 +34,7 @@ namespace Track.Domain.ClearSale.Services {
                 throw new CustomException ("O envio de dados para o ClearSale está desligado", HttpStatusCode.NotImplemented);
         }
 
-        private void IsValidSendDataLoginRequest (SendDataLoginRequest sendDataLoginRequest) {
+        private static void IsValidSendDataLoginRequest (SendDataLoginRequest sendDataLoginRequest) {
             if (sendDataLoginRequest == null) {
                 throw new CustomException ("Request inválido", HttpStatusCode.BadRequest);
             }

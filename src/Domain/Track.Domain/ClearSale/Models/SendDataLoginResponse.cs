@@ -4,6 +4,11 @@ namespace Track.Domain.ClearSale.Models
     {
         public string RequestId { get; set; }
 
-        public SendDataLoginAccountResponse Account { get; set; }
+        public SendDataLoginAccount Account { get; set; }
+    }
+
+    public class SendDataLoginAccount
+    {
+        public string Code { get; set; }
     }
 }

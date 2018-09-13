@@ -4,11 +4,12 @@ using Track.Data.Sql.ConfigurationData.Repositories;
 using Track.Domain.ClearSale.Interfaces.Proxies;
 using Track.Domain.ClearSale.Interfaces.Services;
 using Track.Domain.ClearSale.Services;
-using Track.Domain.ConfigurationData.Services;
 using Track.Domain.ConfigurationData.Interfaces.MongoRepositories;
-using Track.Domain.ConfigurationData.Interfaces.SqlRepositories;
-using Track.Proxy.ClearSale;
 using Track.Domain.ConfigurationData.Interfaces.Services;
+using Track.Domain.ConfigurationData.Interfaces.SqlRepositories;
+using Track.Domain.ConfigurationData.Models;
+using Track.Domain.ConfigurationData.Services;
+using Track.Proxy.ClearSale;
 
 namespace Track.DI {
     public class Bootstrap {
@@ -19,16 +20,25 @@ namespace Track.DI {
             services.AddSingleton<IClearSaleService, ClearSaleService> ();
 
             //--- Caches
-            services.AddSingleton<IConfigurationDataCacheService, ConfigurationDataCacheService>();
-
-            //--- Proxies
-            services.AddSingleton<IClearSaleProxy, ClearSaleProxy> ();
+            services.AddMemoryCache ();
+            services.AddSingleton<IConfigurationDataCacheService, ConfigurationDataCacheService> ();
 
             //--- Mongo Repositories
             services.AddSingleton<IConfigurationDataMongoRepository> (p => new ConfigurationDataMongoRepository (mongoServerName, mongoDatabase));
 
-            //--- Mongo Repositories
+            //--- SQL Repositories
             services.AddSingleton<IConfigurationDataSqlRepository> (p => new ConfigurationDataSqlRepository (sqlConnection));
+
+            //--- Obter chaves de configuração
+            var servicesCollection = services.BuildServiceProvider ();
+            var _configurationDataCacheService = servicesCollection.GetService<IConfigurationDataCacheService> ();
+            Configuration urlApiAccountClearSale = _configurationDataCacheService.GetByKey ("UrlApiAccountClearSale");
+            Configuration urlApiTokenClearSale = _configurationDataCacheService.GetByKey ("UrlApiTokenClearSale");
+            Configuration clearSaleLogin = _configurationDataCacheService.GetByKey ("ClearSaleLogin");
+            Configuration clearSalePassword = _configurationDataCacheService.GetByKey ("ClearSalePassword");
+
+            //--- Proxies
+            services.AddSingleton<IClearSaleProxy> (p => new ClearSaleProxy (urlApiAccountClearSale.Valor, urlApiTokenClearSale.Valor, clearSaleLogin.Valor, clearSalePassword.Valor));
         }
     }
 }

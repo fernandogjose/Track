@@ -2,86 +2,108 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Track.Domain.ClearSale.Interfaces.Proxies;
 using Track.Domain.ClearSale.Models;
+using Track.Domain.Common.Exceptions;
 using Track.Domain.ConfigurationData.Services;
 
 namespace Track.Proxy.ClearSale {
+
     public class ClearSaleProxy : IClearSaleProxy {
+
+        private readonly string _urlApiAccountClearSale;
+
+        private readonly string _urlApiTokenClearSale;
+
+        private readonly string _clearSaleLogin;
+
+        private readonly string _clearSalePassword;
+
+        private static AuthenticationResponse AuthenticationResponse;
+
+        private void ValidateConfigValues () {
+            if (string.IsNullOrEmpty (_urlApiAccountClearSale)) {
+                throw new CustomException ("A chave urlApiAccountClearSale não está configurada no banco de dados", HttpStatusCode.NotAcceptable);
+            }
+
+            if (string.IsNullOrEmpty (_urlApiTokenClearSale)) {
+                throw new CustomException ("A chave urlApiAccountClearSale não está configurada no banco de dados", HttpStatusCode.NotAcceptable);
+            }
+
+            if (string.IsNullOrEmpty (_clearSaleLogin)) {
+                throw new CustomException ("A chave urlApiAccountClearSale não está configurada no banco de dados", HttpStatusCode.NotAcceptable);
+            }
+
+            if (string.IsNullOrEmpty (_clearSalePassword)) {
+                throw new CustomException ("A chave urlApiAccountClearSale não está configurada no banco de dados", HttpStatusCode.NotAcceptable);
+            }
+        }
+
+        public ClearSaleProxy (string urlApiAccountClearSale, string urlApiTokenClearSale, string clearSaleLogin, string clearSalePassword) {
+            _urlApiAccountClearSale = urlApiAccountClearSale;
+            _urlApiTokenClearSale = urlApiTokenClearSale;
+            _clearSaleLogin = clearSaleLogin;
+            _clearSalePassword = clearSalePassword;
+
+            ValidateConfigValues ();
+        }
+
         private readonly ConfigurationDataCacheService _configurationDataCacheService;
 
-        public ClearSaleProxy (ConfigurationDataCacheService configurationDataCacheService) {
+        private async Task<string> SendPost (string url, string request) {
+            HttpClient client = new HttpClient ();
 
-            _configurationDataCacheService = configurationDataCacheService;
-        }
-        public Task<SendDataLoginResponse> SendDataLoginAsync (SendDataLoginRequest sendDataLoginRequest) {
-            throw new NotImplementedException();
-        }
-        public Task<SendDataLoginResponse> SendDataAccountAsync (SendDataAccountRequest sendDataLoginRequest) {
-            string url = GetURL ("UrlApiAccountClearSale");
-            WebRequest httpWebRequest = (HttpWebRequest) WebRequest.Create (url);
-            httpWebRequest.ContentType = "application/json";
-            httpWebRequest.Method = "POST";
-            httpWebRequest.Headers.Add ("Authorization", "Bearer " + GetToken ().Token);
-
-            using (var streamWriter = new StreamWriter (httpWebRequest.GetRequestStream ())) {
-                string json = JsonConvert.SerializeObject (sendDataLoginRequest);
-
-                streamWriter.Write (json);
-                streamWriter.Flush ();
-                streamWriter.Close ();
+            if (AuthenticationResponse != null && !string.IsNullOrEmpty (AuthenticationResponse.Token)) {
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue ("Bearer", AuthenticationResponse.Token);
             }
 
-            WebResponse httpResponse = (HttpWebResponse) httpWebRequest.GetResponse ();
-            string statusCode = ((HttpWebResponse) httpResponse).StatusCode.ToString ().ToUpper ();
+            var result = await client.PostAsync (url, new StringContent (request, Encoding.UTF8, "application/json"));
+            var contents = await result.Content.ReadAsStringAsync ();
 
-            Stream dataStream = httpResponse.GetResponseStream ();
-            StreamReader reader = new StreamReader (dataStream);
-            string responseFromServer = reader.ReadToEnd ();
+            return contents;
+        }
 
-            if (statusCode == "OK") {
-                //  Log.Information($"Dados enviados para a Tempest com sucesso. StatusCode: {statusCode}");
-            } else {
-                //Log.Information($"Dados enviados para a Tempest com erro. StatusCode: {statusCode}");
+        public async Task<SendDataLoginResponse> SendDataLoginAsync (SendDataLoginRequest sendDataLoginRequest) {
+            await GetToken ();
+
+            string sendDataLoginRequestJson = JsonConvert.SerializeObject (sendDataLoginRequest);
+            string sendDataLoginResponseJson = await SendPost ($"{_urlApiAccountClearSale}/Login", sendDataLoginRequestJson);
+
+            SendDataLoginResponse sendDataLoginResponse = JsonConvert.DeserializeObject<SendDataLoginResponse> (sendDataLoginResponseJson);
+
+            return sendDataLoginResponse;
+        }
+
+        public async Task<SendDataLoginResponse> SendDataAccountAsync (SendDataAccountRequest sendDataLoginRequest) {
+            await GetToken ();
+
+            string sendDataLoginRequestJson = JsonConvert.SerializeObject (sendDataLoginRequest);
+            string sendDataLoginResponseJson = await SendPost ($"{_urlApiAccountClearSale}/Login", sendDataLoginRequestJson);
+
+            SendDataLoginResponse sendDataLoginResponse = JsonConvert.DeserializeObject<SendDataLoginResponse> (sendDataLoginResponseJson);
+
+            return sendDataLoginResponse;
+        }
+
+        private async Task GetToken () {
+
+            if (AuthenticationResponse != null && !string.IsNullOrEmpty (AuthenticationResponse.Token)) {
+                return;
             }
 
-            SendDataLoginResponse response = new SendDataLoginResponse ();
-            return Task.FromResult (response);
-        }
-        private string GetURL (string key) {
-            string url = _configurationDataCacheService.GetByKey (key).Valor;
-            return url;
-        }
-        private ClearSaleAuthResponse GetToken () {
+            Dictionary<string, string> authenticateRequest = new Dictionary<string, string> ();
+            authenticateRequest.Add ("name", _clearSaleLogin);
+            authenticateRequest.Add ("password", _clearSalePassword);
 
-            string url = GetURL ("UrlApiTokenClearSale");
-            var data = new Dictionary<string, string> ();
-            data.Add ("name", "NovaPontoCom");
-            data.Add ("password", "hdjYd7E");
+            string authenticateRequestJson = JsonConvert.SerializeObject (authenticateRequest);
+            string authenticationResponse = await SendPost (_urlApiTokenClearSale, authenticateRequestJson);
 
-            WebRequest httpWebRequest = (HttpWebRequest) WebRequest.Create (url);
-            httpWebRequest.ContentType = "application/json";
-            httpWebRequest.Method = "POST";
-
-            using (var streamWriter = new StreamWriter (httpWebRequest.GetRequestStream ())) {
-                string json = JsonConvert.SerializeObject (data);
-
-                streamWriter.Write (json);
-                streamWriter.Flush ();
-                streamWriter.Close ();
-            }
-
-            WebResponse httpResponse = (HttpWebResponse) httpWebRequest.GetResponse ();
-            string statusCode = ((HttpWebResponse) httpResponse).StatusCode.ToString ().ToUpper ();
-            Stream dataStream = httpResponse.GetResponseStream ();
-            StreamReader reader = new StreamReader (dataStream);
-            string responseFromServer = reader.ReadToEnd ();
-            ClearSaleAuthResponse resultCaptcha = JsonConvert.DeserializeObject<ClearSaleAuthResponse> (responseFromServer);
-
-            return resultCaptcha;
+            AuthenticationResponse = JsonConvert.DeserializeObject<AuthenticationResponse> (authenticationResponse);
         }
     }
 }
