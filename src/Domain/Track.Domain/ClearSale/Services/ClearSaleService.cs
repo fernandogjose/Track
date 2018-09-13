@@ -8,6 +8,7 @@ using Track.Domain.ConfigurationData.Caches;
 using Track.Domain.ConfigurationData.Interfaces.MongoRepositories;
 using Track.Domain.ConfigurationData.Models;
 using Track.Domain.Common.Exceptions;
+using Track.Domain.ConfigurationData.Interfaces.Caches;
 
 namespace Track.Domain.ClearSale.Services {
     public class ClearSaleService : IClearSaleService {
@@ -15,9 +16,9 @@ namespace Track.Domain.ClearSale.Services {
 
         private readonly IConfigurationDataMongoRepository _configurationDataMongoRepository;
 
-        private readonly ConfigurationDataCache _configurationDataCache;
+        private readonly IConfigurationDataCache _configurationDataCache;
 
-        public ClearSaleService (IClearSaleProxy clearSaleProxy, IConfigurationDataMongoRepository configurationDataMongoRepository, ConfigurationDataCache configurationDataCache) {
+        public ClearSaleService (IClearSaleProxy clearSaleProxy, IConfigurationDataMongoRepository configurationDataMongoRepository, IConfigurationDataCache configurationDataCache) {
             _clearSaleProxy = clearSaleProxy;
             _configurationDataMongoRepository = configurationDataMongoRepository;
             _configurationDataCache = configurationDataCache;
@@ -31,6 +32,20 @@ namespace Track.Domain.ClearSale.Services {
             //--- verifica se pode executar, caso contrário retorna um erro de negocio (Não implementado)
             if (podeExecutarClearSale == null || string.IsNullOrEmpty (podeExecutarClearSale.Valor) || podeExecutarClearSale.Valor != "true")
                 throw new CustomException ("O envio de dados para o ClearSale está desligado", HttpStatusCode.NotImplemented);
+        }
+
+        private void IsValidSendDataLoginRequest(SendDataLoginRequest sendDataLoginRequest) {
+            if(sendDataLoginRequest == null || sendDataLoginRequest.Account == null || string.IsNullOrEmpty(sendDataLoginRequest.Account.Email)) {
+                throw new CustomException ("Request inválido", HttpStatusCode.BadRequest);
+            }
+
+            if(string.IsNullOrEmpty(sendDataLoginRequest.Account.Email)) {
+                throw new CustomException ("E-mail é obrigatório", HttpStatusCode.BadRequest);
+            }
+
+            if(string.IsNullOrEmpty(sendDataLoginRequest.Account.Name)) {
+                throw new CustomException ("Nome é obrigatório", HttpStatusCode.BadRequest);
+            }
         }
 
         public async Task<SendDataLoginResponse> SendDataLoginAsync (SendDataLoginRequest sendDataLoginRequest) {
