@@ -1,6 +1,7 @@
 using System;
 using System.Net;
 using System.Threading.Tasks;
+using Bogus;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
@@ -35,6 +36,10 @@ namespace Track.XUnit {
 
         private readonly IClearSaleService _clearSaleService;
 
+        private readonly Faker _faker;
+        private readonly string _name;
+        private readonly string _email;
+
         public ClearSaleTest () {
             //--- mock
             _clearSaleProxyMock = new Mock<IClearSaleProxy> ();
@@ -54,6 +59,11 @@ namespace Track.XUnit {
             //--- obter o service
             var services = _serviceCollection.BuildServiceProvider ();
             _clearSaleService = services.GetService<IClearSaleService> ();
+
+            // Dados Fake
+            _faker = new Faker();
+            _name = _faker.Person.FirstName;
+            _email = _faker.Person.Email;
         }
 
         private async Task<SendDataLoginResponse> teste (){
@@ -68,8 +78,8 @@ namespace Track.XUnit {
         public void MustReturnCustomExceptionWhenKeyPodeExecutarClearsaleIsFalse () {
             SendDataLoginRequest sendDataLoginRequest = new SendDataLoginRequest {
                 Account = new Account {
-                    Name = "batata",
-                    Email = "batata@batata.com"
+                    Name = _name,
+                    Email = _email
                 }
             };
             // Task<SendDataLoginResponse> sendDataLoginResponse =  teste();
@@ -89,6 +99,37 @@ namespace Track.XUnit {
                         Nome = "PodeExecutarClearSale",
                         Valor = "false"
                 });
+
+            // _clearSaleProxyMock
+            //     .Setup (r => r.SendDataLoginAsync (sendDataLoginRequest))
+            //     .Returns(sendDataLoginResponse);
+
+            //--- enviar os dados para o a ClearSale
+            var response = Assert.ThrowsAsync<CustomException> (() => _clearSaleService.SendDataLoginAsync (sendDataLoginRequest));
+            Assert.Equal (response.Result.Message, messageExpected);
+            Assert.Equal (response.Result.HttpStatusCode, HttpStatusCode.NotImplemented);
+        }
+
+        [Fact]
+        public void MustReturnCustomExceptionWhenKeyPodeExecutarClearsaleIsNull () {
+            SendDataLoginRequest sendDataLoginRequest = new SendDataLoginRequest {
+                Account = new Account {
+                    Name = "batata",
+                    Email = "batata@batata.com"
+                }
+            };
+            // Task<SendDataLoginResponse> sendDataLoginResponse =  teste();
+
+            const string messageExpected = "O envio de dados para o ClearSale está desligado";
+
+            // //--- Mock do serviço de cache buscando no mongodb
+            // _configurationDataMongoRepositoryMock
+            //     .Setup (r => r.GetByKey ("PodeExecutarClearSale"))
+            //     .Returns ("{\"_id\":\"PODEEXECUTARCLEARSALE\",\"IdDadosConfiguracao\":0,\"IdDadosConfiguracaoAmbiente\":0,\"Ambiente\":null,\"IdDadosConfiguracaoAplicacao\":0,\"Aplicacao\":null,\"IdDadosConfiguracaoGrupo\":0,\"Grupo\":null,\"Nome\":\"PodeExecutarClearSale\",\"Valor\":\"true\",\"DataMudanca\":\"2018-09-12T18:44:53.1802692-03:00\",\"FlagEditavel\":false,\"AlteradoPor\":null}");
+
+            //--- Mock do serviço de cache
+            _configurationDataCacheMock
+                .Setup (r => r.GetByKey ("PodeExecutarClearSale"));
 
             // _clearSaleProxyMock
             //     .Setup (r => r.SendDataLoginAsync (sendDataLoginRequest))
