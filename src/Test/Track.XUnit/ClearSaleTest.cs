@@ -8,9 +8,8 @@ using Track.Domain.ClearSale.Interfaces.Proxies;
 using Track.Domain.ClearSale.Interfaces.Services;
 using Track.Domain.ClearSale.Models;
 using Track.Domain.ClearSale.Services;
-using Track.Domain.ConfigurationData.Caches;
-using Track.Domain.ConfigurationData.Interfaces.Caches;
 using Track.Domain.ConfigurationData.Interfaces.MongoRepositories;
+using Track.Domain.ConfigurationData.Interfaces.Services;
 using Track.Domain.ConfigurationData.Interfaces.SqlRepositories;
 using Track.Domain.ConfigurationData.Models;
 using Track.Proxy.ClearSale;
@@ -26,7 +25,7 @@ namespace Track.XUnit {
 
         private readonly Mock<IConfigurationDataMongoRepository> _configurationDataMongoRepositoryMock;
 
-        private readonly Mock<IConfigurationDataCache> _configurationDataCacheMock;
+        private readonly Mock<IConfigurationDataCacheService> _configurationDataCacheServiceMock;
 
         private readonly Mock<IConfigurationDataSqlRepository> _configurationDataSqlRepositoryMock;
 
@@ -37,7 +36,7 @@ namespace Track.XUnit {
             _clearSaleProxyMock = new Mock<IClearSaleProxy>();
             _configurationDataMongoRepositoryMock = new Mock<IConfigurationDataMongoRepository>();
             _configurationDataSqlRepositoryMock = new Mock<IConfigurationDataSqlRepository>();
-            _configurationDataCacheMock = new Mock<IConfigurationDataCache>();            
+            _configurationDataCacheServiceMock = new Mock<IConfigurationDataCacheService>();            
 
             //--- configuração do DI
             _serviceCollection = new ServiceCollection();
@@ -45,7 +44,7 @@ namespace Track.XUnit {
             _serviceCollection.AddSingleton<IClearSaleProxy>(_clearSaleProxyMock.Object);
             _serviceCollection.AddSingleton<IConfigurationDataMongoRepository>(_configurationDataMongoRepositoryMock.Object);
             _serviceCollection.AddSingleton<IConfigurationDataSqlRepository>(_configurationDataSqlRepositoryMock.Object);
-            _serviceCollection.AddSingleton<IConfigurationDataCache>(_configurationDataCacheMock.Object);
+            _serviceCollection.AddSingleton<IConfigurationDataCacheService>(_configurationDataCacheServiceMock.Object);
             _serviceCollection.AddSingleton<IClearSaleService, ClearSaleService>();
             
             //--- obter o service
@@ -65,7 +64,7 @@ namespace Track.XUnit {
             //     .Returns ("{\"_id\":\"PODEEXECUTARCLEARSALE\",\"IdDadosConfiguracao\":0,\"IdDadosConfiguracaoAmbiente\":0,\"Ambiente\":null,\"IdDadosConfiguracaoAplicacao\":0,\"Aplicacao\":null,\"IdDadosConfiguracaoGrupo\":0,\"Grupo\":null,\"Nome\":\"PodeExecutarClearSale\",\"Valor\":\"true\",\"DataMudanca\":\"2018-09-12T18:44:53.1802692-03:00\",\"FlagEditavel\":false,\"AlteradoPor\":null}");
 
             //--- Mock do serviço de cache
-            _configurationDataCacheMock
+            _configurationDataCacheServiceMock
                 .Setup (r => r.GetByKey ("PodeExecutarClearSale"))
                 .Returns (new Configuration{
                     _id = "PodeExecutarClearSale",

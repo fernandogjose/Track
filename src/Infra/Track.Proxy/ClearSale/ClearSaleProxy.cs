@@ -7,15 +7,15 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Track.Domain.ClearSale.Interfaces.Proxies;
 using Track.Domain.ClearSale.Models;
-using Track.Domain.ConfigurationData.Caches;
+using Track.Domain.ConfigurationData.Services;
 
 namespace Track.Proxy.ClearSale {
     public class ClearSaleProxy : IClearSaleProxy {
-        private readonly ConfigurationDataCache _configurationDataCache;
+        private readonly ConfigurationDataCacheService _configurationDataCacheService;
 
-        public ClearSaleProxy (ConfigurationDataCache configurationDataCache) {
+        public ClearSaleProxy (ConfigurationDataCacheService configurationDataCacheService) {
 
-            _configurationDataCache = configurationDataCache;
+            _configurationDataCacheService = configurationDataCacheService;
         }
         public Task<SendDataLoginResponse> SendDataLoginAsync (SendDataLoginRequest sendDataLoginRequest) {
             throw new NotImplementedException();
@@ -52,7 +52,7 @@ namespace Track.Proxy.ClearSale {
             return Task.FromResult (response);
         }
         private string GetURL (string key) {
-            string url = _configurationDataCache.GetByKey (key).Valor;
+            string url = _configurationDataCacheService.GetByKey (key).Valor;
             return url;
         }
         private ClearSaleAuthResponse GetToken () {

@@ -4,10 +4,11 @@ using Track.Data.Sql.ConfigurationData.Repositories;
 using Track.Domain.ClearSale.Interfaces.Proxies;
 using Track.Domain.ClearSale.Interfaces.Services;
 using Track.Domain.ClearSale.Services;
-using Track.Domain.ConfigurationData.Caches;
+using Track.Domain.ConfigurationData.Services;
 using Track.Domain.ConfigurationData.Interfaces.MongoRepositories;
 using Track.Domain.ConfigurationData.Interfaces.SqlRepositories;
 using Track.Proxy.ClearSale;
+using Track.Domain.ConfigurationData.Interfaces.Services;
 
 namespace Track.DI {
     public class Bootstrap {
@@ -18,7 +19,7 @@ namespace Track.DI {
             services.AddSingleton<IClearSaleService, ClearSaleService> ();
 
             //--- Caches
-            services.AddSingleton<ConfigurationDataCache>();
+            services.AddSingleton<IConfigurationDataCacheService, ConfigurationDataCacheService>();
 
             //--- Proxies
             services.AddSingleton<IClearSaleProxy, ClearSaleProxy> ();

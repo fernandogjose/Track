@@ -5,8 +5,8 @@ using Track.Domain.ClearSale.Interfaces.Proxies;
 using Track.Domain.ClearSale.Interfaces.Services;
 using Track.Domain.ClearSale.Models;
 using Track.Domain.Common.Exceptions;
-using Track.Domain.ConfigurationData.Caches;
-using Track.Domain.ConfigurationData.Interfaces.Caches;
+using Track.Domain.ConfigurationData.Services;
+using Track.Domain.ConfigurationData.Interfaces.Services;
 using Track.Domain.ConfigurationData.Interfaces.MongoRepositories;
 using Track.Domain.ConfigurationData.Models;
 
@@ -16,18 +16,18 @@ namespace Track.Domain.ClearSale.Services {
 
         private readonly IConfigurationDataMongoRepository _configurationDataMongoRepository;
 
-        private readonly IConfigurationDataCache _configurationDataCache;
+        private readonly IConfigurationDataCacheService _configurationDataCacheService;
 
-        public ClearSaleService (IClearSaleProxy clearSaleProxy, IConfigurationDataMongoRepository configurationDataMongoRepository, IConfigurationDataCache configurationDataCache) {
+        public ClearSaleService (IClearSaleProxy clearSaleProxy, IConfigurationDataMongoRepository configurationDataMongoRepository, IConfigurationDataCacheService configurationDataCacheService) {
             _clearSaleProxy = clearSaleProxy;
             _configurationDataMongoRepository = configurationDataMongoRepository;
-            _configurationDataCache = configurationDataCache;
+            _configurationDataCacheService = configurationDataCacheService;
         }
 
         private void IsSendDataLogin () {
 
             //--- obter do cache (memória -> mongo -> banco)
-            Configuration podeExecutarClearSale = _configurationDataCache.GetByKey ("PodeExecutarClearSale");
+            Configuration podeExecutarClearSale = _configurationDataCacheService.GetByKey ("PodeExecutarClearSale");
 
             //--- verifica se pode executar, caso contrário retorna um erro de negocio (Não implementado)
             if (podeExecutarClearSale == null || string.IsNullOrEmpty (podeExecutarClearSale.Valor) || podeExecutarClearSale.Valor != "true")
