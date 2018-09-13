@@ -4,11 +4,11 @@ using System.Threading.Tasks;
 using Track.Domain.ClearSale.Interfaces.Proxies;
 using Track.Domain.ClearSale.Interfaces.Services;
 using Track.Domain.ClearSale.Models;
-using Track.Domain.ConfigurationData.Caches;
+using Track.Domain.Common.Exceptions;
+using Track.Domain.ConfigurationData.Services;
+using Track.Domain.ConfigurationData.Interfaces.Services;
 using Track.Domain.ConfigurationData.Interfaces.MongoRepositories;
 using Track.Domain.ConfigurationData.Models;
-using Track.Domain.Common.Exceptions;
-using Track.Domain.ConfigurationData.Interfaces.Caches;
 
 namespace Track.Domain.ClearSale.Services {
     public class ClearSaleService : IClearSaleService {
@@ -16,40 +16,40 @@ namespace Track.Domain.ClearSale.Services {
 
         private readonly IConfigurationDataMongoRepository _configurationDataMongoRepository;
 
-        private readonly IConfigurationDataCache _configurationDataCache;
+        private readonly IConfigurationDataCacheService _configurationDataCacheService;
 
-        public ClearSaleService (IClearSaleProxy clearSaleProxy, IConfigurationDataMongoRepository configurationDataMongoRepository, IConfigurationDataCache configurationDataCache) {
+        public ClearSaleService (IClearSaleProxy clearSaleProxy, IConfigurationDataMongoRepository configurationDataMongoRepository, IConfigurationDataCacheService configurationDataCacheService) {
             _clearSaleProxy = clearSaleProxy;
             _configurationDataMongoRepository = configurationDataMongoRepository;
-            _configurationDataCache = configurationDataCache;
+            _configurationDataCacheService = configurationDataCacheService;
         }
 
         private void IsSendDataLogin () {
 
             //--- obter do cache (memória -> mongo -> banco)
-            Configuration podeExecutarClearSale = _configurationDataCache.GetByKey ("PodeExecutarClearSale");
+            Configuration podeExecutarClearSale = _configurationDataCacheService.GetByKey ("PodeExecutarClearSale");
 
             //--- verifica se pode executar, caso contrário retorna um erro de negocio (Não implementado)
             if (podeExecutarClearSale == null || string.IsNullOrEmpty (podeExecutarClearSale.Valor) || podeExecutarClearSale.Valor != "true")
                 throw new CustomException ("O envio de dados para o ClearSale está desligado", HttpStatusCode.NotImplemented);
         }
 
-        private void IsValidSendDataLoginRequest(SendDataLoginRequest sendDataLoginRequest) {
-            if(sendDataLoginRequest == null || sendDataLoginRequest.Account == null || string.IsNullOrEmpty(sendDataLoginRequest.Account.Email)) {
+        private void IsValidSendDataLoginRequest (SendDataLoginRequest sendDataLoginRequest) {
+            if (sendDataLoginRequest == null) {
                 throw new CustomException ("Request inválido", HttpStatusCode.BadRequest);
             }
 
-            if(string.IsNullOrEmpty(sendDataLoginRequest.Account.Email)) {
+            if (string.IsNullOrEmpty (sendDataLoginRequest.Code)) {
                 throw new CustomException ("E-mail é obrigatório", HttpStatusCode.BadRequest);
             }
 
-            if(string.IsNullOrEmpty(sendDataLoginRequest.Account.Name)) {
-                throw new CustomException ("Nome é obrigatório", HttpStatusCode.BadRequest);
+            if (string.IsNullOrEmpty (sendDataLoginRequest.SessionId)) {
+                throw new CustomException ("SessionId é obrigatório", HttpStatusCode.BadRequest);
             }
         }
 
         public async Task<SendDataLoginResponse> SendDataLoginAsync (SendDataLoginRequest sendDataLoginRequest) {
-            IsValidSendDataLoginRequest(sendDataLoginRequest);
+            IsValidSendDataLoginRequest (sendDataLoginRequest);
             IsSendDataLogin ();
             SendDataLoginResponse sendDataLoginResponse = await _clearSaleProxy.SendDataLoginAsync (sendDataLoginRequest);
             return sendDataLoginResponse;

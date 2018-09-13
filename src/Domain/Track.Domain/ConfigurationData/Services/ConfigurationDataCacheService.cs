@@ -1,13 +1,13 @@
 using System;
 using Microsoft.Extensions.Caching.Memory;
 using Newtonsoft.Json;
-using Track.Domain.ConfigurationData.Interfaces.Caches;
+using Track.Domain.ConfigurationData.Interfaces.Services;
 using Track.Domain.ConfigurationData.Interfaces.MongoRepositories;
 using Track.Domain.ConfigurationData.Interfaces.SqlRepositories;
 using Track.Domain.ConfigurationData.Models;
 
-namespace Track.Domain.ConfigurationData.Caches {
-    public class ConfigurationDataCache: IConfigurationDataCache {
+namespace Track.Domain.ConfigurationData.Services {
+    public class ConfigurationDataCacheService: IConfigurationDataCacheService {
 
         private readonly IMemoryCache _memoryCache;
 
@@ -15,7 +15,7 @@ namespace Track.Domain.ConfigurationData.Caches {
 
         private IConfigurationDataSqlRepository _configurationDataSqlRepository;
 
-        public ConfigurationDataCache (IMemoryCache memoryCache, IConfigurationDataMongoRepository configurationDataMongoRepository, IConfigurationDataSqlRepository configurationDataSqlRepository) {
+        public ConfigurationDataCacheService (IMemoryCache memoryCache, IConfigurationDataMongoRepository configurationDataMongoRepository, IConfigurationDataSqlRepository configurationDataSqlRepository) {
             _memoryCache = memoryCache;
             _configurationDataMongoRepository = configurationDataMongoRepository;
             _configurationDataSqlRepository = configurationDataSqlRepository;
