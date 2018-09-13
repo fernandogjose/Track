@@ -34,6 +34,20 @@ namespace Track.Domain.ClearSale.Services {
                 throw new CustomException ("O envio de dados para o ClearSale está desligado", HttpStatusCode.NotImplemented);
         }
 
+        private void IsValidSendDataLoginRequest(SendDataLoginRequest sendDataLoginRequest) {
+            if(sendDataLoginRequest == null || sendDataLoginRequest.Account == null || string.IsNullOrEmpty(sendDataLoginRequest.Account.Email)) {
+                throw new CustomException ("Request inválido", HttpStatusCode.BadRequest);
+            }
+
+            if(string.IsNullOrEmpty(sendDataLoginRequest.Account.Email)) {
+                throw new CustomException ("E-mail é obrigatório", HttpStatusCode.BadRequest);
+            }
+
+            if(string.IsNullOrEmpty(sendDataLoginRequest.Account.Name)) {
+                throw new CustomException ("Nome é obrigatório", HttpStatusCode.BadRequest);
+            }
+        }
+
         public async Task<SendDataLoginResponse> SendDataLoginAsync (SendDataLoginRequest sendDataLoginRequest) {
             IsSendDataLogin ();
             SendDataLoginResponse sendDataLoginResponse = await _clearSaleProxy.SendDataLoginAsync (sendDataLoginRequest);
