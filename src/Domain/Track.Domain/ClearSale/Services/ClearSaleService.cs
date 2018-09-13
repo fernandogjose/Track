@@ -8,6 +8,7 @@ using Track.Domain.ConfigurationData.Caches;
 using Track.Domain.ConfigurationData.Interfaces.MongoRepositories;
 using Track.Domain.ConfigurationData.Models;
 using Track.Domain.Common.Exceptions;
+using Track.Domain.ConfigurationData.Interfaces.Caches;
 
 namespace Track.Domain.ClearSale.Services {
     public class ClearSaleService : IClearSaleService {
@@ -15,9 +16,9 @@ namespace Track.Domain.ClearSale.Services {
 
         private readonly IConfigurationDataMongoRepository _configurationDataMongoRepository;
 
-        private readonly ConfigurationDataCache _configurationDataCache;
+        private readonly IConfigurationDataCache _configurationDataCache;
 
-        public ClearSaleService (IClearSaleProxy clearSaleProxy, IConfigurationDataMongoRepository configurationDataMongoRepository, ConfigurationDataCache configurationDataCache) {
+        public ClearSaleService (IClearSaleProxy clearSaleProxy, IConfigurationDataMongoRepository configurationDataMongoRepository, IConfigurationDataCache configurationDataCache) {
             _clearSaleProxy = clearSaleProxy;
             _configurationDataMongoRepository = configurationDataMongoRepository;
             _configurationDataCache = configurationDataCache;
