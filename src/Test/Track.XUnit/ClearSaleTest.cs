@@ -1,4 +1,6 @@
 using System;
+using System.Net;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
@@ -8,6 +10,7 @@ using Track.Domain.ClearSale.Interfaces.Proxies;
 using Track.Domain.ClearSale.Interfaces.Services;
 using Track.Domain.ClearSale.Models;
 using Track.Domain.ClearSale.Services;
+using Track.Domain.Common.Exceptions;
 using Track.Domain.ConfigurationData.Caches;
 using Track.Domain.ConfigurationData.Interfaces.Caches;
 using Track.Domain.ConfigurationData.Interfaces.MongoRepositories;
@@ -34,30 +37,44 @@ namespace Track.XUnit {
 
         public ClearSaleTest () {
             //--- mock
-            _clearSaleProxyMock = new Mock<IClearSaleProxy>();
-            _configurationDataMongoRepositoryMock = new Mock<IConfigurationDataMongoRepository>();
-            _configurationDataSqlRepositoryMock = new Mock<IConfigurationDataSqlRepository>();
-            _configurationDataCacheMock = new Mock<IConfigurationDataCache>();            
+            _clearSaleProxyMock = new Mock<IClearSaleProxy> ();
+            _configurationDataMongoRepositoryMock = new Mock<IConfigurationDataMongoRepository> ();
+            _configurationDataSqlRepositoryMock = new Mock<IConfigurationDataSqlRepository> ();
+            _configurationDataCacheMock = new Mock<IConfigurationDataCache> ();
 
             //--- configuração do DI
-            _serviceCollection = new ServiceCollection();
-            _serviceCollection.AddMemoryCache();
-            _serviceCollection.AddSingleton<IClearSaleProxy>(_clearSaleProxyMock.Object);
-            _serviceCollection.AddSingleton<IConfigurationDataMongoRepository>(_configurationDataMongoRepositoryMock.Object);
-            _serviceCollection.AddSingleton<IConfigurationDataSqlRepository>(_configurationDataSqlRepositoryMock.Object);
-            _serviceCollection.AddSingleton<IConfigurationDataCache>(_configurationDataCacheMock.Object);
-            _serviceCollection.AddSingleton<IClearSaleService, ClearSaleService>();
-            
+            _serviceCollection = new ServiceCollection ();
+            _serviceCollection.AddMemoryCache ();
+            _serviceCollection.AddSingleton<IClearSaleProxy> (_clearSaleProxyMock.Object);
+            _serviceCollection.AddSingleton<IConfigurationDataMongoRepository> (_configurationDataMongoRepositoryMock.Object);
+            _serviceCollection.AddSingleton<IConfigurationDataSqlRepository> (_configurationDataSqlRepositoryMock.Object);
+            _serviceCollection.AddSingleton<IConfigurationDataCache> (_configurationDataCacheMock.Object);
+            _serviceCollection.AddSingleton<IClearSaleService, ClearSaleService> ();
+
             //--- obter o service
-            var services = _serviceCollection.BuildServiceProvider();
-            _clearSaleService = services.GetService<IClearSaleService>();
+            var services = _serviceCollection.BuildServiceProvider ();
+            _clearSaleService = services.GetService<IClearSaleService> ();
+        }
+
+        private async Task<SendDataLoginResponse> teste (){
+            SendDataLoginResponse t = new SendDataLoginResponse{
+                SessionId = "ssddad"
+            };
+
+            return t;
         }
 
         [Fact]
-        public void EnviarRequestVazio () {
-            SendDataLoginRequest sendDataLoginRequest = new SendDataLoginRequest ();
+        public void MustReturnCustomExceptionWhenKeyPodeExecutarClearsaleIsFalse () {
+            SendDataLoginRequest sendDataLoginRequest = new SendDataLoginRequest {
+                Account = new Account {
+                    Name = "batata",
+                    Email = "batata@batata.com"
+                }
+            };
+            // Task<SendDataLoginResponse> sendDataLoginResponse =  teste();
 
-            string expectedStatus = "Faulted";
+            const string messageExpected = "O envio de dados para o ClearSale está desligado";
 
             // //--- Mock do serviço de cache buscando no mongodb
             // _configurationDataMongoRepositoryMock
@@ -67,16 +84,20 @@ namespace Track.XUnit {
             //--- Mock do serviço de cache
             _configurationDataCacheMock
                 .Setup (r => r.GetByKey ("PodeExecutarClearSale"))
-                .Returns (new Configuration{
+                .Returns (new Configuration {
                     _id = "PodeExecutarClearSale",
-                    Nome = "PodeExecutarClearSale",
-                    Valor = "true"
+                        Nome = "PodeExecutarClearSale",
+                        Valor = "false"
                 });
 
-            //--- enviar os dados para o login
-            var retorno = _clearSaleService.SendDataLoginAsync (sendDataLoginRequest);
-           
-            Assert.Equal (retorno.Status.ToString(), expectedStatus);
+            // _clearSaleProxyMock
+            //     .Setup (r => r.SendDataLoginAsync (sendDataLoginRequest))
+            //     .Returns(sendDataLoginResponse);
+
+            //--- enviar os dados para o a ClearSale
+            var response = Assert.ThrowsAsync<CustomException> (() => _clearSaleService.SendDataLoginAsync (sendDataLoginRequest));
+            Assert.Equal (response.Result.Message, messageExpected);
+            Assert.Equal (response.Result.HttpStatusCode, HttpStatusCode.NotImplemented);
         }
     }
 }
