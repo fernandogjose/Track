@@ -1,6 +1,8 @@
-﻿using Bogus;
+﻿using System;
+using Bogus;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
+using Newtonsoft.Json;
 using Track.Domain.ClearSale.Interfaces.Proxies;
 using Track.Domain.ClearSale.Interfaces.Services;
 using Track.Domain.ClearSale.Models;
@@ -11,11 +13,8 @@ using Track.Domain.ConfigurationData.Models;
 using Track.Domain.ConfigurationData.Services;
 using Xunit;
 
-namespace Track.XUnit
-{
-    public class ConfigurationDataCacheTest
-    {
-
+namespace Track.XUnit {
+    public class ConfigurationDataCacheTest {
 
         private readonly IServiceCollection _serviceCollection;
 
@@ -27,13 +26,13 @@ namespace Track.XUnit
 
         private readonly Mock<IConfigurationDataSqlRepository> _configurationDataSqlRepositoryMock;
 
-        private readonly IClearSaleService _clearSaleService;
+        private readonly IConfigurationDataCacheService _configurationDataCacheService;
 
         private readonly Faker _faker;
         private readonly string _name;
         private readonly string _email;
-
         private readonly int _randomInt;
+        private readonly string _randomWord;
 
         public ConfigurationDataCacheTest () {
             //--- mock
@@ -48,43 +47,40 @@ namespace Track.XUnit
             _serviceCollection.AddSingleton<IClearSaleProxy> (_clearSaleProxyMock.Object);
             _serviceCollection.AddSingleton<IConfigurationDataMongoRepository> (_configurationDataMongoRepositoryMock.Object);
             _serviceCollection.AddSingleton<IConfigurationDataSqlRepository> (_configurationDataSqlRepositoryMock.Object);
-            _serviceCollection.AddSingleton<IConfigurationDataCacheService,ConfigurationDataCacheService>();
+            _serviceCollection.AddSingleton<IConfigurationDataCacheService, ConfigurationDataCacheService> ();
 
             //--- obter o service
             var services = _serviceCollection.BuildServiceProvider ();
-            _clearSaleService = services.GetService<IClearSaleService> ();
+            _configurationDataCacheService = services.GetService<IConfigurationDataCacheService> ();
 
             // Dados Fake
             _faker = new Faker ();
             _name = _faker.Person.FirstName;
             _email = _faker.Person.Email;
             _randomInt = _faker.Random.Int (0, int.MaxValue);
+            _randomWord = _faker.Random.String (15);
         }
 
-
-         [Fact]
+        [Fact]
         public void MustReturnAConfigurationObjectWhenTheKeyIsFoundInMongo () {
+            //GetByCacheInMongo
 
-            SendDataLoginRequest sendDataLoginRequest = new SendDataLoginRequest {
-                Code = _name,
-                SessionId = _email
+            Configuration configuration = new Configuration {
+                _id = "CanSendDataLoginClearSale",
+                Nome = "CanSendDataLoginClearSale",
+                Valor = "true"
+
             };
 
-            Configuration configuration = new Configuration{
-                    _id = "CanSendDataLoginClearSale",
-                        Nome = "CanSendDataLoginClearSale",
-                        Valor = "true"
-                };
+            string jsonConfiguration = JsonConvert.SerializeObject (configuration);
 
-            //--- Mock do serviço de cache
-            _configurationDataCacheServiceMock
+            _configurationDataMongoRepositoryMock
                 .Setup (r => r.GetByKey ("CanSendDataLoginClearSale"))
-                .Returns (configuration);
+                .Returns (jsonConfiguration);
 
-            //--- enviar os dados para o a ClearSale
-            var response = _clearSaleService.SendDataLoginAsync (sendDataLoginRequest);
-            Assert.Same(response.Result, configuration);
-            // Assert.Equal (response.Result.HttpStatusCode, HttpStatusCode.NotImplemented);
+            var response = _configurationDataCacheService.GetByKey ("CanSendDataLoginClearSale");
+            // Assert.Equals (response, configuration);
+
         }
     }
 }
