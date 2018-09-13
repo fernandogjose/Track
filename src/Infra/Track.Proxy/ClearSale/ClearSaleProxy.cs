@@ -9,18 +9,28 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Track.Domain.ClearSale.Interfaces.Proxies;
 using Track.Domain.ClearSale.Models;
+<<<<<<< HEAD
 using Track.Domain.Common.Exceptions;
+=======
+using Track.Domain.ConfigurationData.Interfaces.Services;
+>>>>>>> 81fe6aa53e637a09b061b172b5d8170dbe515c42
 using Track.Domain.ConfigurationData.Services;
 
 namespace Track.Proxy.ClearSale {
 
     public class ClearSaleProxy : IClearSaleProxy {
+<<<<<<< HEAD
 
         private readonly string _urlApiAccountClearSale;
 
         private readonly string _urlApiTokenClearSale;
 
         private readonly string _clearSaleLogin;
+=======
+        private readonly IConfigurationDataCacheService _configurationDataCacheService;
+
+        public ClearSaleProxy (IConfigurationDataCacheService configurationDataCacheService) {
+>>>>>>> 81fe6aa53e637a09b061b172b5d8170dbe515c42
 
         private readonly string _clearSalePassword;
 
@@ -43,6 +53,7 @@ namespace Track.Proxy.ClearSale {
                 throw new CustomException ("A chave urlApiAccountClearSale não está configurada no banco de dados", HttpStatusCode.NotAcceptable);
             }
         }
+<<<<<<< HEAD
 
         public ClearSaleProxy (string urlApiAccountClearSale, string urlApiTokenClearSale, string clearSaleLogin, string clearSalePassword) {
             _urlApiAccountClearSale = urlApiAccountClearSale;
@@ -66,6 +77,23 @@ namespace Track.Proxy.ClearSale {
             var contents = await result.Content.ReadAsStringAsync ();
 
             return contents;
+=======
+        public Task<SendDataLoginResponse> SendDataLoginAsync (SendDataLoginRequest sendDataLoginRequest) {
+            throw new NotImplementedException ();
+        }
+        public async Task<SendDataLoginResponse> SendDataAccountAsync (SendDataAccountRequest sendDataLoginRequest) {
+
+            HttpClient client = new HttpClient ();
+            string url = GetURL ("UrlApiAccountClearSale");
+            string json = JsonConvert.SerializeObject (sendDataLoginRequest);
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue ("Bearer", GetToken ().Token);
+            var result = await client.PostAsync (url, new StringContent (json, Encoding.UTF8, "application/json"));
+            var contents = await result.Content.ReadAsStringAsync ();
+          
+            SendDataLoginResponse response = new SendDataLoginResponse ();
+            
+            return response;
+>>>>>>> 81fe6aa53e637a09b061b172b5d8170dbe515c42
         }
 
         public async Task<SendDataLoginResponse> SendDataLoginAsync (SendDataLoginRequest sendDataLoginRequest) {

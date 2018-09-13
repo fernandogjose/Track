@@ -21,7 +21,7 @@ using Xunit;
 
 namespace Track.XUnit {
 
-    public class ClearSaleTest {
+    public class ClearSaleServiceTest {
 
         private readonly IServiceCollection _serviceCollection;
 
@@ -39,7 +39,9 @@ namespace Track.XUnit {
         private readonly string _name;
         private readonly string _email;
 
-        public ClearSaleTest () {
+        private readonly int _randomInt;
+
+        public ClearSaleServiceTest () {
             //--- mock
             _clearSaleProxyMock = new Mock<IClearSaleProxy> ();
             _configurationDataMongoRepositoryMock = new Mock<IConfigurationDataMongoRepository> ();
@@ -63,13 +65,20 @@ namespace Track.XUnit {
             _faker = new Faker ();
             _name = _faker.Person.FirstName;
             _email = _faker.Person.Email;
+            _randomInt = _faker.Random.Int (0, int.MaxValue);
         }
 
         private async Task<SendDataLoginResponse> GetSendDataLoginResponse () {
             SendDataLoginResponse sendDataLoginResponse = new SendDataLoginResponse {
+<<<<<<< HEAD
                 RequestId = "ssddad",
                 Account = new SendDataLoginAccount {
                     Code = "123456"
+=======
+                RequestId = _randomInt.ToString (),
+                Account = new SendDataLoginAccountResponse {
+                Code = _randomInt.ToString ()
+>>>>>>> 81fe6aa53e637a09b061b172b5d8170dbe515c42
                 }
             };
 
@@ -77,31 +86,26 @@ namespace Track.XUnit {
         }
 
         [Fact]
-        public void MustReturnCustomExceptionWhenKeyPodeExecutarClearsaleIsFalse () {
+        public void MustReturnCustomExceptionWhenKeyCanSendDataLoginClearSaleIsFalse () {
             SendDataLoginRequest sendDataLoginRequest = new SendDataLoginRequest {
+<<<<<<< HEAD
 
+=======
+                Code = _name,
+                SessionId = _email
+>>>>>>> 81fe6aa53e637a09b061b172b5d8170dbe515c42
             };
-            // Task<SendDataLoginResponse> sendDataLoginResponse =  teste();
 
             const string messageExpected = "O envio de dados para o ClearSale está desligado";
 
-            // //--- Mock do serviço de cache buscando no mongodb
-            // _configurationDataMongoRepositoryMock
-            //     .Setup (r => r.GetByKey ("PodeExecutarClearSale"))
-            //     .Returns ("{\"_id\":\"PODEEXECUTARCLEARSALE\",\"IdDadosConfiguracao\":0,\"IdDadosConfiguracaoAmbiente\":0,\"Ambiente\":null,\"IdDadosConfiguracaoAplicacao\":0,\"Aplicacao\":null,\"IdDadosConfiguracaoGrupo\":0,\"Grupo\":null,\"Nome\":\"PodeExecutarClearSale\",\"Valor\":\"true\",\"DataMudanca\":\"2018-09-12T18:44:53.1802692-03:00\",\"FlagEditavel\":false,\"AlteradoPor\":null}");
-
             //--- Mock do serviço de cache
             _configurationDataCacheServiceMock
-                .Setup (r => r.GetByKey ("PodeExecutarClearSale"))
+                .Setup (r => r.GetByKey ("CanSendDataLoginClearSale"))
                 .Returns (new Configuration {
-                    _id = "PodeExecutarClearSale",
-                        Nome = "PodeExecutarClearSale",
+                    _id = "CanSendDataLoginClearSale",
+                        Nome = "CanSendDataLoginClearSale",
                         Valor = "false"
                 });
-
-            // _clearSaleProxyMock
-            //     .Setup (r => r.SendDataLoginAsync (sendDataLoginRequest))
-            //     .Returns(sendDataLoginResponse);
 
             //--- enviar os dados para o a ClearSale
             var response = Assert.ThrowsAsync<CustomException> (() => _clearSaleService.SendDataLoginAsync (sendDataLoginRequest));
@@ -110,31 +114,98 @@ namespace Track.XUnit {
         }
 
         [Fact]
-        public void MustReturnCustomExceptionWhenKeyPodeExecutarClearsaleIsNull () {
+        public void MustReturnCustomExceptionWhenKeyCanSendDataLoginClearSaleIsNull () {
             SendDataLoginRequest sendDataLoginRequest = new SendDataLoginRequest {
-
+                Code = _name,
+                SessionId = _email
             };
-            // Task<SendDataLoginResponse> sendDataLoginResponse =  teste();
 
             const string messageExpected = "O envio de dados para o ClearSale está desligado";
 
-            // //--- Mock do serviço de cache buscando no mongodb
-            // _configurationDataMongoRepositoryMock
-            //     .Setup (r => r.GetByKey ("PodeExecutarClearSale"))
-            //     .Returns ("{\"_id\":\"PODEEXECUTARCLEARSALE\",\"IdDadosConfiguracao\":0,\"IdDadosConfiguracaoAmbiente\":0,\"Ambiente\":null,\"IdDadosConfiguracaoAplicacao\":0,\"Aplicacao\":null,\"IdDadosConfiguracaoGrupo\":0,\"Grupo\":null,\"Nome\":\"PodeExecutarClearSale\",\"Valor\":\"true\",\"DataMudanca\":\"2018-09-12T18:44:53.1802692-03:00\",\"FlagEditavel\":false,\"AlteradoPor\":null}");
-
             //--- Mock do serviço de cache
             _configurationDataCacheServiceMock
-                .Setup (r => r.GetByKey ("PodeExecutarClearSale"));
-
-            // _clearSaleProxyMock
-            //     .Setup (r => r.SendDataLoginAsync (sendDataLoginRequest))
-            //     .Returns(sendDataLoginResponse);
+                .Setup (r => r.GetByKey ("CanSendDataLoginClearSale"));
 
             //--- enviar os dados para o a ClearSale
             var response = Assert.ThrowsAsync<CustomException> (() => _clearSaleService.SendDataLoginAsync (sendDataLoginRequest));
             Assert.Equal (response.Result.Message, messageExpected);
             Assert.Equal (response.Result.HttpStatusCode, HttpStatusCode.NotImplemented);
         }
+
+        [Fact]
+        public void MustSuccessfullySendDataToClearSale () {
+            SendDataLoginRequest sendDataLoginRequest = new SendDataLoginRequest {
+<<<<<<< HEAD
+
+=======
+                Code = _name,
+                SessionId = _email
+>>>>>>> 81fe6aa53e637a09b061b172b5d8170dbe515c42
+            };
+
+            const string messageExpected = "O envio de dados para o ClearSale está desligado";
+
+            //--- Mock do serviço de cache
+            _configurationDataCacheServiceMock
+                .Setup (r => r.GetByKey ("CanSendDataLoginClearSale"));
+
+            //--- enviar os dados para o a ClearSale
+            var response = Assert.ThrowsAsync<CustomException> (() => _clearSaleService.SendDataLoginAsync (sendDataLoginRequest));
+            Assert.Equal (response.Result.Message, messageExpected);
+            Assert.Equal (response.Result.HttpStatusCode, HttpStatusCode.NotImplemented);
+        }
+
+        [Fact]
+        public void MustReturnBadRequestStatusWithTheMessageRequestInvalidoWhenRequestIsNullOrInvalid () {
+            SendDataLoginRequest sendDataLoginRequest = null;
+
+            const string messageExpected = "Request inválido";
+
+            //--- Mock do serviço de cache
+            _configurationDataCacheServiceMock
+                .Setup (r => r.GetByKey ("CanSendDataLoginClearSale"));
+
+            //--- enviar os dados para o a ClearSale
+            var response = Assert.ThrowsAsync<CustomException> (() => _clearSaleService.SendDataLoginAsync (sendDataLoginRequest));
+            Assert.Equal (response.Result.Message, messageExpected);
+            Assert.Equal (response.Result.HttpStatusCode, HttpStatusCode.BadRequest);
+        }
+
+        [Fact]
+        public void MustReturnBadRequestStatusWithTheMessageEmailEObrigatorioWhenCodeIsEmpty () {
+            SendDataLoginRequest sendDataLoginRequest = new SendDataLoginRequest {
+                SessionId = _email
+            };
+
+            const string messageExpected = "E-mail é obrigatório";
+
+            //--- Mock do serviço de cache
+            _configurationDataCacheServiceMock
+                .Setup (r => r.GetByKey ("CanSendDataLoginClearSale"));
+
+            //--- enviar os dados para o a ClearSale
+            var response = Assert.ThrowsAsync<CustomException> (() => _clearSaleService.SendDataLoginAsync (sendDataLoginRequest));
+            Assert.Equal (response.Result.Message, messageExpected);
+            Assert.Equal (response.Result.HttpStatusCode, HttpStatusCode.BadRequest);
+        }
+
+        [Fact]
+        public void MustReturnBadRequestStatusWithTheMessageSessionIdEObrigatorioWhenSessionIdIsEmpty () {
+            SendDataLoginRequest sendDataLoginRequest = new SendDataLoginRequest {
+                Code = _name
+            };
+
+            const string messageExpected = "SessionId é obrigatório";
+
+            //--- Mock do serviço de cache
+            _configurationDataCacheServiceMock
+                .Setup (r => r.GetByKey ("CanSendDataLoginClearSale"));
+
+            //--- enviar os dados para o a ClearSale
+            var response = Assert.ThrowsAsync<CustomException> (() => _clearSaleService.SendDataLoginAsync (sendDataLoginRequest));
+            Assert.Equal (response.Result.Message, messageExpected);
+            Assert.Equal (response.Result.HttpStatusCode, HttpStatusCode.BadRequest);
+        }
+       
     }
 }
