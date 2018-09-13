@@ -57,7 +57,7 @@ namespace Track.XUnit {
         public void EnviarRequestVazio () {
             SendDataLoginRequest sendDataLoginRequest = new SendDataLoginRequest ();
 
-            int expectedStatusCode = 200;
+            string expectedStatus = "Faulted";
 
             // //--- Mock do serviço de cache buscando no mongodb
             // _configurationDataMongoRepositoryMock
@@ -76,7 +76,7 @@ namespace Track.XUnit {
             //--- enviar os dados para o login
             var retorno = _clearSaleService.SendDataLoginAsync (sendDataLoginRequest);
            
-            Assert.Equal (200, expectedStatusCode);
+            Assert.Equal (retorno.Status.ToString(), expectedStatus);
         }
     }
 }
