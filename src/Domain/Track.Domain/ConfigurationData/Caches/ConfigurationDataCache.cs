@@ -1,12 +1,13 @@
 using System;
 using Microsoft.Extensions.Caching.Memory;
 using Newtonsoft.Json;
+using Track.Domain.ConfigurationData.Interfaces.Caches;
 using Track.Domain.ConfigurationData.Interfaces.MongoRepositories;
 using Track.Domain.ConfigurationData.Interfaces.SqlRepositories;
 using Track.Domain.ConfigurationData.Models;
 
 namespace Track.Domain.ConfigurationData.Caches {
-    public class ConfigurationDataCache {
+    public class ConfigurationDataCache: IConfigurationDataCache {
 
         private readonly IMemoryCache _memoryCache;
 

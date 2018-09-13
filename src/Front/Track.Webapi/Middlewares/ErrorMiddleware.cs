@@ -7,13 +7,22 @@ using Track.Domain.Common.Exceptions;
 
 namespace Track.Webapi.Middlewares {
 
+    /// <summary>
+    /// Interceptador dos erros da api
+    /// </summary>
     public class ErrorMiddleware {
         private readonly RequestDelegate next;
 
+        /// <summary>
+        /// Construtor
+        /// </summary>
         public ErrorMiddleware (RequestDelegate next) {
             this.next = next;
         }
 
+        /// <summary>
+        /// Invoke
+        /// </summary>
         public async Task Invoke (HttpContext context) {
             try {
                 await next (context);
