@@ -15,14 +15,26 @@ using Track.DI;
 
 namespace Track.Webapi {
 
+    /// <summary>
+    /// Startup
+    /// </summary>
     public class Startup {
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public Startup (IConfiguration configuration) {
             Configuration = configuration;
         }
 
+        /// <summary>
+        /// IConfiguration
+        /// </summary>
         public IConfiguration Configuration { get; }
 
+        /// <summary>
+        /// ConfigureServices
+        /// </summary>
         public void ConfigureServices (IServiceCollection services) {
 
             //--- obter as chaves do config
@@ -46,10 +58,9 @@ namespace Track.Webapi {
             services.AddMvc ();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         /// <summary>
-    /// ClearSale API
-    /// </summary>
+        /// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        /// </summary>
         public void Configure (IApplicationBuilder app, IHostingEnvironment env) {
             if (env.IsDevelopment ()) {
                 app.UseDeveloperExceptionPage ();
