@@ -70,15 +70,9 @@ namespace Track.XUnit {
 
         private async Task<SendDataLoginResponse> GetSendDataLoginResponse () {
             SendDataLoginResponse sendDataLoginResponse = new SendDataLoginResponse {
-<<<<<<< HEAD
                 RequestId = "ssddad",
                 Account = new SendDataLoginAccount {
                     Code = "123456"
-=======
-                RequestId = _randomInt.ToString (),
-                Account = new SendDataLoginAccountResponse {
-                Code = _randomInt.ToString ()
->>>>>>> 81fe6aa53e637a09b061b172b5d8170dbe515c42
                 }
             };
 
@@ -88,12 +82,6 @@ namespace Track.XUnit {
         [Fact]
         public void MustReturnCustomExceptionWhenKeyCanSendDataLoginClearSaleIsFalse () {
             SendDataLoginRequest sendDataLoginRequest = new SendDataLoginRequest {
-<<<<<<< HEAD
-
-=======
-                Code = _name,
-                SessionId = _email
->>>>>>> 81fe6aa53e637a09b061b172b5d8170dbe515c42
             };
 
             const string messageExpected = "O envio de dados para o ClearSale está desligado";
@@ -135,12 +123,6 @@ namespace Track.XUnit {
         [Fact]
         public void MustSuccessfullySendDataToClearSale () {
             SendDataLoginRequest sendDataLoginRequest = new SendDataLoginRequest {
-<<<<<<< HEAD
-
-=======
-                Code = _name,
-                SessionId = _email
->>>>>>> 81fe6aa53e637a09b061b172b5d8170dbe515c42
             };
 
             const string messageExpected = "O envio de dados para o ClearSale está desligado";

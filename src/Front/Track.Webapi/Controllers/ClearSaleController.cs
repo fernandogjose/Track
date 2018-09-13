@@ -42,15 +42,9 @@ namespace Track.Webapi.Controllers {
         /// <returns>Objeto com o status do envio</returns>
         [HttpPost]
         [Route ("sendDataAccountAsync")]
-        public async Task<SendDataLoginResponse> SendDataAccountAsync ([FromBody] SendDataAccountRequest sendDataAccountRequest) {
-            try {
-                SendDataLoginResponse sendDataLoginResponse = await _clearSaleService.SendDataAccountAsync (sendDataAccountRequest);
-                return sendDataLoginResponse;
-            } catch (System.Exception ex) {
-
-                throw;
-            }
-
+        public async Task<SendDataAccountResponse> SendDataAccountAsync ([FromBody] SendDataAccountRequest sendDataAccountRequest) {
+            SendDataAccountResponse sendDataAccountResponse = await _clearSaleService.SendDataAccountAsync (sendDataAccountRequest);
+            return sendDataAccountResponse;
         }
     }
 

@@ -55,10 +55,10 @@ namespace Track.Domain.ClearSale.Services {
             return sendDataLoginResponse;
         }
 
-        public async Task<SendDataLoginResponse> SendDataAccountAsync(SendDataAccountRequest sendDataAccountRequest)
+        public async Task<SendDataAccountResponse> SendDataAccountAsync(SendDataAccountRequest sendDataAccountRequest)
         {
-            SendDataLoginResponse sendDataLoginResponse = await _clearSaleProxy.SendDataAccountAsync (sendDataAccountRequest);
-            return null;
+            SendDataAccountResponse sendDataAccountResponse = await _clearSaleProxy.SendDataAccountAsync (sendDataAccountRequest);
+            return sendDataAccountResponse;
         }
     }
 }

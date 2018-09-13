@@ -7,6 +7,6 @@ namespace Track.Domain.ClearSale.Interfaces.Services
     {        
         Task<SendDataLoginResponse> SendDataLoginAsync (SendDataLoginRequest sendDataLoginRequest);
 
-        Task<SendDataLoginResponse> SendDataAccountAsync (SendDataAccountRequest sendDataAccountRequest);
+        Task<SendDataAccountResponse> SendDataAccountAsync (SendDataAccountRequest sendDataAccountRequest);
     }
 }
