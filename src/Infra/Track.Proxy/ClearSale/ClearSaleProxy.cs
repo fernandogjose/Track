@@ -15,7 +15,7 @@ using Track.Domain.ConfigurationData.Services;
 
 namespace Track.Proxy.ClearSale {
 
-    public class ClearSaleProxy : IClearSaleProxy {
+    public class ClearSaleProxy : BaseProxy, IClearSaleProxy {
 
         private readonly string _urlApiAccountClearSale;
 
@@ -24,6 +24,8 @@ namespace Track.Proxy.ClearSale {
         private readonly string _clearSaleLogin;
 
         private readonly string _clearSalePassword;
+
+        private readonly ConfigurationDataCacheService _configurationDataCacheService;
 
         private static AuthenticationResponse AuthenticationResponse;
 
@@ -54,21 +56,6 @@ namespace Track.Proxy.ClearSale {
             ValidateConfigValues ();
         }
 
-        private readonly ConfigurationDataCacheService _configurationDataCacheService;
-
-        private async Task<string> SendPost (string url, string request) {
-            HttpClient client = new HttpClient ();
-
-            if (AuthenticationResponse != null && !string.IsNullOrEmpty (AuthenticationResponse.Token)) {
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue ("Bearer", AuthenticationResponse.Token);
-            }
-
-            var result = await client.PostAsync (url, new StringContent (request, Encoding.UTF8, "application/json"));
-            var contents = await result.Content.ReadAsStringAsync ();
-
-            return contents;
-        }
-
         public async Task<SendDataLoginResponse> SendDataLoginAsync (SendDataLoginRequest sendDataLoginRequest) {
 
             //--- obter o token
@@ -78,7 +65,7 @@ namespace Track.Proxy.ClearSale {
             string sendDataLoginRequestJson = JsonConvert.SerializeObject (sendDataLoginRequest);
 
             //--- post
-            string sendDataLoginResponseJson = await SendPost ($"{_urlApiAccountClearSale}/Login", sendDataLoginRequestJson);
+            string sendDataLoginResponseJson = await SendPost ($"{_urlApiAccountClearSale}/Login", sendDataLoginRequestJson, AuthenticationResponse);
 
             //--- deserializa o json para o o objeto de retorno
             SendDataLoginResponse sendDataLoginResponse = JsonConvert.DeserializeObject<SendDataLoginResponse> (sendDataLoginResponseJson);
@@ -95,7 +82,7 @@ namespace Track.Proxy.ClearSale {
             string sendDataAccountRequestJson = JsonConvert.SerializeObject (sendDataAccountRequest);
 
             //--- post
-            string sendDataLoginResponseJson = await SendPost (_urlApiAccountClearSale, sendDataAccountRequestJson);
+            string sendDataLoginResponseJson = await SendPost (_urlApiAccountClearSale, sendDataAccountRequestJson, AuthenticationResponse);
 
             //--- deserializa o json para o o objeto de retorno
             SendDataAccountResponse sendDataAccountResponse = JsonConvert.DeserializeObject<SendDataAccountResponse> (sendDataLoginResponseJson);
@@ -106,7 +93,9 @@ namespace Track.Proxy.ClearSale {
 
         private async Task GetToken () {
 
-            if (AuthenticationResponse != null && !string.IsNullOrEmpty (AuthenticationResponse.Token)) {
+            if (AuthenticationResponse != null && 
+                !string.IsNullOrEmpty (AuthenticationResponse.Token) && 
+                Convert.ToDateTime(AuthenticationResponse.ExpirationDate) >= DateTime.Now) {
                 return;
             }
 
@@ -115,7 +104,7 @@ namespace Track.Proxy.ClearSale {
             authenticateRequest.Add ("password", _clearSalePassword);
 
             string authenticateRequestJson = JsonConvert.SerializeObject (authenticateRequest);
-            string authenticationResponse = await SendPost (_urlApiTokenClearSale, authenticateRequestJson);
+            string authenticationResponse = await SendPost (_urlApiTokenClearSale, authenticateRequestJson, AuthenticationResponse);
 
             AuthenticationResponse = JsonConvert.DeserializeObject<AuthenticationResponse> (authenticationResponse);
         }
