@@ -27,7 +27,7 @@ namespace Track.Domain.ClearSale.Services {
         private void IsSendDataLogin () {
 
             //--- obter do cache (memória -> mongo -> banco)
-            Configuration podeExecutarClearSale = _configurationDataCacheService.GetByKey ("PodeExecutarClearSale");
+            Configuration podeExecutarClearSale = _configurationDataCacheService.GetByKey ("CanSendDataLoginClearSale");
 
             //--- verifica se pode executar, caso contrário retorna um erro de negocio (Não implementado)
             if (podeExecutarClearSale == null || string.IsNullOrEmpty (podeExecutarClearSale.Valor) || podeExecutarClearSale.Valor != "true")

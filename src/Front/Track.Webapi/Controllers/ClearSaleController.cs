@@ -31,13 +31,8 @@ namespace Track.Webapi.Controllers {
         [HttpPost]
         [Route ("sendDataLoginAsync")]
         public async Task<SendDataLoginResponse> SendDataLoginAsync ([FromBody] SendDataLoginRequest sendDataLoginRequest) {
-            try {
-                SendDataLoginResponse sendDataLoginResponse = await _clearSaleService.SendDataLoginAsync (sendDataLoginRequest);
-                return sendDataLoginResponse;
-            } catch (System.Exception ex) {
-                throw;
-            }
-
+            SendDataLoginResponse sendDataLoginResponse = await _clearSaleService.SendDataLoginAsync (sendDataLoginRequest);
+            return sendDataLoginResponse;
         }
     }
 
