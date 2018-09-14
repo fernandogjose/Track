@@ -71,6 +71,8 @@ namespace Track.XUnit {
         [Fact]
         public void MustReturnCustomExceptionWhenKeyCanSendDataLoginClearSaleIsFalse () {
             SendDataLoginRequest sendDataLoginRequest = new SendDataLoginRequest {
+                Code = _name,
+                SessionId = _randomInt.ToString()
             };
 
             const string messageExpected = "O envio de dados para o ClearSale está desligado";
@@ -112,6 +114,8 @@ namespace Track.XUnit {
         [Fact]
         public void MustSuccessfullySendDataToClearSale () {
             SendDataLoginRequest sendDataLoginRequest = new SendDataLoginRequest {
+                Code = _name,
+                SessionId = _randomInt.ToString()
             };
 
             const string messageExpected = "O envio de dados para o ClearSale está desligado";
@@ -130,11 +134,11 @@ namespace Track.XUnit {
         public void MustReturnBadRequestStatusWithTheMessageRequestInvalidoWhenRequestIsNullOrInvalid () {
             SendDataLoginRequest sendDataLoginRequest = null;
 
-            const string messageExpected = "Request inválido";
+            const string messageExpected = "Objeto request não pode ser null";
 
-            //--- Mock do serviço de cache
-            _configurationDataCacheServiceMock
-                .Setup (r => r.GetByKey ("CanSendDataLoginClearSale"));
+            // //--- Mock do serviço de cache
+            // _configurationDataCacheServiceMock
+            //     .Setup (r => r.GetByKey ("CanSendDataLoginClearSale"));
 
             //--- enviar os dados para o a ClearSale
             var response = Assert.ThrowsAsync<CustomException> (() => _clearSaleService.SendDataLoginAsync (sendDataLoginRequest));
@@ -143,12 +147,12 @@ namespace Track.XUnit {
         }
 
         [Fact]
-        public void MustReturnBadRequestStatusWithTheMessageEmailEObrigatorioWhenCodeIsEmpty () {
+        public void MustReturnBadRequestStatusWithTheMessageCodeEObrigatorioWhenCodeIsEmpty () {
             SendDataLoginRequest sendDataLoginRequest = new SendDataLoginRequest {
                 SessionId = _email
             };
 
-            const string messageExpected = "E-mail é obrigatório";
+            const string messageExpected = "Code é obrigatório";
 
             //--- Mock do serviço de cache
             _configurationDataCacheServiceMock

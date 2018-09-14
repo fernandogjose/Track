@@ -46,7 +46,7 @@ namespace Track.Domain.ClearSale.Services {
 
         private static void ValidateString (string value, string name) {
             if (string.IsNullOrEmpty (value)) {
-                throw new CustomException ($"{name} é obrigatórios", HttpStatusCode.BadRequest);
+                throw new CustomException ($"{name} é obrigatório", HttpStatusCode.BadRequest);
             }
         }
 
