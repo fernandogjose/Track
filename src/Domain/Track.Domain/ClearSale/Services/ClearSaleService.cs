@@ -18,7 +18,7 @@ namespace Track.Domain.ClearSale.Services {
 
         private readonly IConfigurationDataCacheService _configurationDataCacheService;
 
-        private void IsSendDataLogin () {
+        private void CanSendDataLoginClearSale () {
 
             //--- obter do cache (memória -> mongo -> banco)
             Configuration podeExecutarClearSale = _configurationDataCacheService.GetByKey ("CanSendDataLoginClearSale");
@@ -28,10 +28,20 @@ namespace Track.Domain.ClearSale.Services {
                 throw new CustomException ("O envio de dados para o ClearSale está desligado", HttpStatusCode.NotImplemented);
         }
 
-        private void IsSendDataResetPassword () {
+        private void CanSendDataResetPasswordClearSale () {
 
             //--- obter do cache (memória -> mongo -> banco)
-            Configuration podeExecutarClearSale = _configurationDataCacheService.GetByKey ("CanSendDataLoginClearSale");
+            Configuration podeExecutarClearSale = _configurationDataCacheService.GetByKey ("CanSendDataResetPasswordClearSale");
+
+            //--- verifica se pode executar, caso contrário retorna um erro de negocio (Não implementado)
+            if (podeExecutarClearSale == null || string.IsNullOrEmpty (podeExecutarClearSale.Valor) || podeExecutarClearSale.Valor != "true")
+                throw new CustomException ("O envio de dados para o ClearSale está desligado", HttpStatusCode.NotImplemented);
+        }
+
+        private void CanSendDataAccountClearSale () {
+
+            //--- obter do cache (memória -> mongo -> banco)
+            Configuration podeExecutarClearSale = _configurationDataCacheService.GetByKey ("CanSendDataAccountClearSale");
 
             //--- verifica se pode executar, caso contrário retorna um erro de negocio (Não implementado)
             if (podeExecutarClearSale == null || string.IsNullOrEmpty (podeExecutarClearSale.Valor) || podeExecutarClearSale.Valor != "true")
@@ -60,7 +70,7 @@ namespace Track.Domain.ClearSale.Services {
             ValidateRequestObject(sendDataLoginRequest);
             ValidateString (sendDataLoginRequest.Code, "Code");
             ValidateString (sendDataLoginRequest.SessionId, "SessionId");
-            IsSendDataLogin ();
+            CanSendDataLoginClearSale ();
             SendDataLoginResponse sendDataLoginResponse = await _clearSaleProxy.SendDataLoginAsync (sendDataLoginRequest);
             return sendDataLoginResponse;
         }
@@ -69,7 +79,7 @@ namespace Track.Domain.ClearSale.Services {
             ValidateRequestObject(sendDataResetPasswordRequest);
             ValidateString (sendDataResetPasswordRequest.Code, "Code");
             ValidateString (sendDataResetPasswordRequest.SessionId, "SessionId");
-            IsSendDataResetPassword ();
+            CanSendDataResetPasswordClearSale ();
             SendDataResetPasswordResponse sendDataResetPasswordResponse = await _clearSaleProxy.SendDataResetPasswordAsync (sendDataResetPasswordRequest);
             return sendDataResetPasswordResponse;
         }

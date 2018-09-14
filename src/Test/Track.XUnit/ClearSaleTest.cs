@@ -89,7 +89,7 @@ namespace Track.XUnit {
             //--- enviar os dados para o a ClearSale
             var response = Assert.ThrowsAsync<CustomException> (() => _clearSaleService.SendDataLoginAsync (sendDataLoginRequest));
             Assert.Equal (response.Result.Message, messageExpected);
-            Assert.Equal (response.Result.HttpStatusCode, HttpStatusCode.NotImplemented);
+            Assert.Equal (HttpStatusCode.NotImplemented, response.Result.HttpStatusCode);
         }
 
         [Fact]
@@ -108,7 +108,7 @@ namespace Track.XUnit {
             //--- enviar os dados para o a ClearSale
             var response = Assert.ThrowsAsync<CustomException> (() => _clearSaleService.SendDataLoginAsync (sendDataLoginRequest));
             Assert.Equal (response.Result.Message, messageExpected);
-            Assert.Equal (response.Result.HttpStatusCode, HttpStatusCode.NotImplemented);
+            Assert.Equal (HttpStatusCode.NotImplemented, response.Result.HttpStatusCode);
         }
 
         [Fact]
@@ -127,7 +127,7 @@ namespace Track.XUnit {
             //--- enviar os dados para o a ClearSale
             var response = Assert.ThrowsAsync<CustomException> (() => _clearSaleService.SendDataLoginAsync (sendDataLoginRequest));
             Assert.Equal (response.Result.Message, messageExpected);
-            Assert.Equal (response.Result.HttpStatusCode, HttpStatusCode.NotImplemented);
+            Assert.Equal (HttpStatusCode.NotImplemented, response.Result.HttpStatusCode);
         }
 
         [Fact]
@@ -142,8 +142,8 @@ namespace Track.XUnit {
 
             //--- enviar os dados para o a ClearSale
             var response = Assert.ThrowsAsync<CustomException> (() => _clearSaleService.SendDataLoginAsync (sendDataLoginRequest));
-            Assert.Equal (response.Result.Message, messageExpected);
-            Assert.Equal (response.Result.HttpStatusCode, HttpStatusCode.BadRequest);
+            Assert.Equal (messageExpected, response.Result.Message);
+            Assert.Equal (HttpStatusCode.BadRequest, response.Result.HttpStatusCode);
         }
 
         [Fact]
@@ -161,7 +161,7 @@ namespace Track.XUnit {
             //--- enviar os dados para o a ClearSale
             var response = Assert.ThrowsAsync<CustomException> (() => _clearSaleService.SendDataLoginAsync (sendDataLoginRequest));
             Assert.Equal (response.Result.Message, messageExpected);
-            Assert.Equal (response.Result.HttpStatusCode, HttpStatusCode.BadRequest);
+            Assert.Equal (HttpStatusCode.BadRequest, response.Result.HttpStatusCode);
         }
 
         [Fact]
@@ -179,7 +179,7 @@ namespace Track.XUnit {
             //--- enviar os dados para o a ClearSale
             var response = Assert.ThrowsAsync<CustomException> (() => _clearSaleService.SendDataLoginAsync (sendDataLoginRequest));
             Assert.Equal (response.Result.Message, messageExpected);
-            Assert.Equal (response.Result.HttpStatusCode, HttpStatusCode.BadRequest);
+            Assert.Equal (HttpStatusCode.BadRequest, response.Result.HttpStatusCode);
         }
        
     }
