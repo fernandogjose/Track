@@ -25,8 +25,6 @@ namespace Track.Proxy.ClearSale {
 
         private readonly string _clearSalePassword;
 
-        private readonly ConfigurationDataCacheService _configurationDataCacheService;
-
         private static AuthenticationResponse AuthenticationResponse;
 
         private void ValidateConfigValues () {
