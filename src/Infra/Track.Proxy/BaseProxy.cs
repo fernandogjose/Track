@@ -18,7 +18,7 @@ namespace Track.Proxy {
             return client;
         }
 
-        public async Task<string> SendPost (string url, string request, AuthenticationResponse authenticationResponse) {
+        public async Task<string> HttpPostAsync (string url, string request, AuthenticationResponse authenticationResponse) {
 
             HttpClient client = GetHeader(authenticationResponse);
 
@@ -28,7 +28,7 @@ namespace Track.Proxy {
             return contents;
         }
 
-        public async Task<string> SendPut (string url, string request, AuthenticationResponse authenticationResponse) {
+        public async Task<string> HttpPutAsync (string url, string request, AuthenticationResponse authenticationResponse) {
 
             HttpClient client = GetHeader(authenticationResponse);
 
