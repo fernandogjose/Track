@@ -74,8 +74,13 @@ namespace Track.Domain.ClearSale.Services {
             return sendDataResetPasswordResponse;
         }
 
-        public async Task<SendDataAccountResponse> SendDataAccountAsync (SendDataAccountRequest sendDataAccountRequest) {
-            SendDataAccountResponse sendDataAccountResponse = await _clearSaleProxy.SendDataAccountAsync (sendDataAccountRequest);
+        public async Task<SendDataAccountResponse> SendDataAccountCreateAsync (SendDataAccountRequest sendDataAccountRequest) {
+            SendDataAccountResponse sendDataAccountResponse = await _clearSaleProxy.SendDataAccountCreateAsync (sendDataAccountRequest);
+            return sendDataAccountResponse;
+        }
+        
+        public async Task<SendDataAccountResponse> SendDataAccountUpdateAsync (SendDataAccountRequest sendDataAccountRequest) {
+            SendDataAccountResponse sendDataAccountResponse = await _clearSaleProxy.SendDataAccountUpdateAsync (sendDataAccountRequest);
             return sendDataAccountResponse;
         }
     }

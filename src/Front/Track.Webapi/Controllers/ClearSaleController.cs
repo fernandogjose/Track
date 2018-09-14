@@ -41,11 +41,24 @@ namespace Track.Webapi.Controllers {
         /// <param name="sendDataAccountRequest">Objeto com os dados do usuário</param>
         /// <returns>Objeto com o status do envio</returns>
         [HttpPost]
-        [Route ("sendDataAccountAsync")]
-        public async Task<SendDataAccountResponse> SendDataAccountAsync ([FromBody] SendDataAccountRequest sendDataAccountRequest) {
-            SendDataAccountResponse sendDataAccountResponse = await _clearSaleService.SendDataAccountAsync (sendDataAccountRequest);
+        [Route ("sendDataAccountCreateAsync")]
+        public async Task<SendDataAccountResponse> SendDataAccountCreateAsync ([FromBody] SendDataAccountRequest sendDataAccountRequest) {
+            SendDataAccountResponse sendDataAccountResponse = await _clearSaleService.SendDataAccountCreateAsync (sendDataAccountRequest);
             return sendDataAccountResponse;
         }
+
+         /// <summary>
+        /// Envia os dados do login para o ClearSale
+        /// </summary>
+        /// <param name="sendDataAccountRequest">Objeto com os dados do usuário</param>
+        /// <returns>Objeto com o status do envio</returns>
+        [HttpPost]
+        [Route ("sendDataAccountUpdateAsync")]
+        public async Task<SendDataAccountResponse> SendDataAccountUpdateAsync ([FromBody] SendDataAccountRequest sendDataAccountRequest) {
+            SendDataAccountResponse sendDataAccountResponse = await _clearSaleService.SendDataAccountUpdateAsync (sendDataAccountRequest);
+            return sendDataAccountResponse;
+        }
+
 
         /// <summary>
         /// Envia os dados do recuperar senha
