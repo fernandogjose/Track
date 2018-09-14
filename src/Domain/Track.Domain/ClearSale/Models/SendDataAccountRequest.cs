@@ -10,7 +10,7 @@ namespace Track.Domain.ClearSale.Models {
         [JsonProperty (PropertyName = "date")]
         public string Date { get; set; }
 
-        [JsonProperty (PropertyName = "sessionId")]
+        [JsonProperty (PropertyName = "sessionID")]
         public string SessionId { get; set; }
 
         [JsonProperty (PropertyName = "name")]

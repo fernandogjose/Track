@@ -68,17 +68,6 @@ namespace Track.XUnit {
             _randomInt = _faker.Random.Int (0, int.MaxValue);
         }
 
-        private async Task<SendDataLoginResponse> GetSendDataLoginResponse () {
-            SendDataLoginResponse sendDataLoginResponse = new SendDataLoginResponse {
-                RequestId = "ssddad",
-                Account = new SendDataLoginAccount {
-                    Code = "123456"
-                }
-            };
-
-            return sendDataLoginResponse;
-        }
-
         [Fact]
         public void MustReturnCustomExceptionWhenKeyCanSendDataLoginClearSaleIsFalse () {
             SendDataLoginRequest sendDataLoginRequest = new SendDataLoginRequest {
