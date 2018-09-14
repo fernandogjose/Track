@@ -12,6 +12,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.Extensions.PlatformAbstractions;
 using Swashbuckle.AspNetCore.Swagger;
 using Track.DI;
+using Track.Webapi.Middlewares;
 
 namespace Track.Webapi {
 
@@ -65,6 +66,8 @@ namespace Track.Webapi {
             if (env.IsDevelopment ()) {
                 app.UseDeveloperExceptionPage ();
             }
+
+            app.UseMiddleware(typeof(ErrorMiddleware));
 
             app.UseCors (
                 options => options
