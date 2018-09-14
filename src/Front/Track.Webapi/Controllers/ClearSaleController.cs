@@ -27,36 +27,65 @@ namespace Track.Webapi.Controllers {
         /// Envia os dados do login para o ClearSale
         /// </summary>
         /// <param name="sendDataLoginRequest">Objeto com os dados do usuário</param>
+        /// <response code="200">Objeto com o status do envio</response>
+        /// <response code="400">Solicitação inválida.</response>
+        /// <response code="500">Erro inesperado.</response>
         /// <returns>Objeto com o status do envio</returns>
         [HttpPost]
         [Route ("sendDataLoginAsync")]
-        public async Task<SendDataLoginResponse> SendDataLoginAsync ([FromBody] SendDataLoginRequest sendDataLoginRequest) {
+        [ProducesResponseType(typeof(SendDataLoginResponse), 200)]
+        public async Task<ActionResult> SendDataLoginAsync ([FromBody] SendDataLoginRequest sendDataLoginRequest) {
             SendDataLoginResponse sendDataLoginResponse = await _clearSaleService.SendDataLoginAsync (sendDataLoginRequest);
-            return sendDataLoginResponse;
+            return this.Ok(sendDataLoginResponse);
         }
 
         /// <summary>
         /// Envia os dados do login para o ClearSale
         /// </summary>
         /// <param name="sendDataAccountRequest">Objeto com os dados do usuário</param>
+        /// <response code="200">Objeto com o status do envio</response>
+        /// <response code="400">Solicitação inválida.</response>
+        /// <response code="500">Erro inesperado.</response>
         /// <returns>Objeto com o status do envio</returns>
         [HttpPost]
-        [Route ("sendDataAccountAsync")]
-        public async Task<SendDataAccountResponse> SendDataAccountAsync ([FromBody] SendDataAccountRequest sendDataAccountRequest) {
-            SendDataAccountResponse sendDataAccountResponse = await _clearSaleService.SendDataAccountAsync (sendDataAccountRequest);
-            return sendDataAccountResponse;
+        [Route ("sendDataAccountCreateAsync")]
+        [ProducesResponseType(typeof(SendDataAccountResponse), 200)]
+        public async Task<ActionResult> SendDataAccountCreateAsync ([FromBody] SendDataAccountRequest sendDataAccountRequest) {
+            SendDataAccountResponse sendDataAccountResponse = await _clearSaleService.SendDataAccountCreateAsync (sendDataAccountRequest);
+            return this.Ok(sendDataAccountResponse);
         }
+
+         /// <summary>
+        /// Envia os dados do login para o ClearSale
+        /// </summary>
+        /// <param name="sendDataAccountRequest">Objeto com os dados do usuário</param>
+        /// <response code="200">Objeto com o status do envio</response>
+        /// <response code="400">Solicitação inválida.</response>
+        /// <response code="500">Erro inesperado.</response>
+        /// <returns>Objeto com o status do envio</returns>
+        [HttpPost]
+        [Route ("sendDataAccountUpdateAsync")]
+        [ProducesResponseType(typeof(SendDataAccountResponse), 200)]
+        public async Task<ActionResult> SendDataAccountUpdateAsync ([FromBody] SendDataAccountRequest sendDataAccountRequest) {
+            SendDataAccountResponse sendDataAccountResponse = await _clearSaleService.SendDataAccountUpdateAsync (sendDataAccountRequest);
+            return this.Ok(sendDataAccountResponse);
+        }
+
 
         /// <summary>
         /// Envia os dados do recuperar senha
         /// </summary>
         /// <param name="sendDataResetPasswordRequest">Objeto com os dados do usuário</param>
+        /// <response code="200">Objeto com o status do envio</response>
+        /// <response code="400">Solicitação inválida.</response>
+        /// <response code="500">Erro inesperado.</response>
         /// <returns>Objeto com o status do envio</returns>
         [HttpPost]
         [Route ("sendDataAccountAsync")]
-        public async Task<SendDataResetPasswordResponse> SendDataAccountAsync ([FromBody] SendDataResetPasswordRequest sendDataResetPasswordRequest) {
+        [ProducesResponseType(typeof(SendDataResetPasswordResponse), 200)]
+        public async Task<ActionResult> SendDataAccountAsync ([FromBody] SendDataResetPasswordRequest sendDataResetPasswordRequest) {
             SendDataResetPasswordResponse sendDataResetPasswordResponse = await _clearSaleService.SendDataResetPasswordAsync (sendDataResetPasswordRequest);
-            return sendDataResetPasswordResponse;
+            return this.Ok(sendDataResetPasswordResponse);
         }        
     }
 }
