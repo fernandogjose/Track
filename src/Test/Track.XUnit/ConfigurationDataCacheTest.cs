@@ -63,13 +63,13 @@ namespace Track.XUnit {
 
         [Fact]
         public void MustReturnAConfigurationObjectWhenTheKeyIsFoundInMongo () {
-            //GetByCacheInMongo
+            DateTime dataComparacao = DateTime.Now.AddMinutes (-30);
 
             Configuration configuration = new Configuration {
                 _id = "CanSendDataLoginClearSale",
                 Nome = "CanSendDataLoginClearSale",
-                Valor = "true"
-
+                Valor = "true",
+                DataMudanca = DateTime.Now
             };
 
             string jsonConfiguration = JsonConvert.SerializeObject (configuration);
@@ -79,8 +79,51 @@ namespace Track.XUnit {
                 .Returns (jsonConfiguration);
 
             var response = _configurationDataCacheService.GetByKey ("CanSendDataLoginClearSale");
-            // Assert.Equals (response, configuration);
+            Assert.Equal (response._id, configuration._id);
+            Assert.Equal (response.Nome, configuration.Nome);
+            Assert.Equal (response.Valor, configuration.Valor);
+            Assert.True (response.DataMudanca > dataComparacao);
+        }
 
+        [Fact]
+        public void MustReturnAConfigurationObjectWhenTheKeyIsFoundInSQL () {
+            DateTime dataComparacao = DateTime.Now.AddMinutes (-30);
+
+            Configuration configuration = new Configuration {
+                _id = "CanSendDataLoginClearSale",
+                Nome = "CanSendDataLoginClearSale",
+                Valor = "true",
+                DataMudanca = DateTime.Now
+            };
+
+            string jsonConfiguration = JsonConvert.SerializeObject (configuration);
+
+            _configurationDataMongoRepositoryMock
+                .Setup (r => r.GetByKey ("CanSendDataLoginClearSale"));
+
+            _configurationDataSqlRepositoryMock
+                .Setup (r => r.GetByKey ("CanSendDataLoginClearSale"))
+                .Returns (configuration);
+
+            var response = _configurationDataCacheService.GetByKey ("CanSendDataLoginClearSale");
+            Assert.Equal (response._id, configuration._id);
+            Assert.Equal (response.Nome, configuration.Nome);
+            Assert.Equal (response.Valor, configuration.Valor);
+            Assert.True (response.DataMudanca > dataComparacao);
+        }
+
+        [Fact]
+        public void MustReturnNullWhenTheKeyWasNotFoundOnCacheOrMongoOrSQL () {
+
+            _configurationDataMongoRepositoryMock
+                .Setup (r => r.GetByKey ("CanSendDataLoginClearSale"));
+
+            _configurationDataSqlRepositoryMock
+                .Setup (r => r.GetByKey ("CanSendDataLoginClearSale"))
+                .Returns(new Configuration());
+
+            var response = _configurationDataCacheService.GetByKey ("CanSendDataLoginClearSale");
+            Assert.True(string.IsNullOrEmpty(response.Valor));
         }
     }
 }
