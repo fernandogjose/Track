@@ -46,6 +46,17 @@ namespace Track.Webapi.Controllers {
             SendDataAccountResponse sendDataAccountResponse = await _clearSaleService.SendDataAccountAsync (sendDataAccountRequest);
             return sendDataAccountResponse;
         }
-    }
 
+        /// <summary>
+        /// Envia os dados do recuperar senha
+        /// </summary>
+        /// <param name="sendDataResetPasswordRequest">Objeto com os dados do usuário</param>
+        /// <returns>Objeto com o status do envio</returns>
+        [HttpPost]
+        [Route ("sendDataAccountAsync")]
+        public async Task<SendDataResetPasswordResponse> SendDataAccountAsync ([FromBody] SendDataResetPasswordRequest sendDataResetPasswordRequest) {
+            SendDataResetPasswordResponse sendDataResetPasswordResponse = await _clearSaleService.SendDataResetPasswordAsync (sendDataResetPasswordRequest);
+            return sendDataResetPasswordResponse;
+        }        
+    }
 }
