@@ -82,7 +82,7 @@ namespace Track.Domain.ClearSale.Models {
         [JsonProperty (PropertyName = "comp")]
         public string Complement { get; set; }
 
-        [JsonProperty (PropertyName = "extension")]
+        [JsonProperty (PropertyName = "county")]
         public string County { get; set; }
 
         [JsonProperty (PropertyName = "city")]
@@ -94,7 +94,7 @@ namespace Track.Domain.ClearSale.Models {
         [JsonProperty (PropertyName = "country")]
         public string Country { get; set; }
 
-        [JsonProperty (PropertyName = "zipCode")]
+        [JsonProperty (PropertyName = "zipcode")]
         public string ZipCode { get; set; }
 
         [JsonProperty (PropertyName = "reference")]
