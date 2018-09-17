@@ -128,23 +128,32 @@ namespace Track.XUnit {
 
         [Fact]
         public void MustSearchOnSQLWhenCacheExpiresOnMongoAndReturnAConfigurationObject () {
-            DateTime dataComparacao = DateTime.Now.AddMinutes (-30);
+            DateTime dataExpirada = DateTime.Now.AddMinutes (-30);
 
             Configuration configuration = new Configuration {
                 _id = "CanSendDataLoginClearSale",
-                    Nome = "CanSendDataLoginClearSale",
-                    Valor = "true",
-                    DataMudanca = DateTime.Now
+                Nome = "CanSendDataLoginClearSale",
+                Valor = "true",
+                DataMudanca = dataExpirada
             };
+
+            string jsonConfiguration = JsonConvert.SerializeObject (configuration);
 
             _configurationDataMongoRepositoryMock
                 .Setup (r => r.GetByKey ("CanSendDataLoginClearSale"))
-                .Returns(new Configuration());
+                .Returns (jsonConfiguration);
 
             _configurationDataSqlRepositoryMock
                 .Setup (r => r.GetByKey ("CanSendDataLoginClearSale"))
-                .Returns (new Configuration ());
+                .Returns (new Configuration {
+                    _id = "CanSendDataLoginClearSale",
+                        Nome = "CanSendDataLoginClearSale",
+                        Valor = "true",
+                        DataMudanca = DateTime.Now
+                });
+
+            var response = _configurationDataCacheService.GetByKey ("CanSendDataLoginClearSale");
+            Assert.True (!string.IsNullOrEmpty (response.Valor));
         }
     }
-}
 }
