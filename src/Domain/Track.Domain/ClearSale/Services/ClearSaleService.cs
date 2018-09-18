@@ -69,7 +69,7 @@ namespace Track.Domain.ClearSale.Services {
         public async Task<SendDataLoginResponse> SendDataLoginAsync (SendDataLoginRequest sendDataLoginRequest) {
             ValidateRequestObject(sendDataLoginRequest);
             ValidateString (sendDataLoginRequest.Code, "Code");
-            ValidateString (sendDataLoginRequest.SessionId, "SessionId");
+            ValidateString (sendDataLoginRequest.SessionID, "SessionId");
             CanSendDataLoginClearSale ();
             SendDataLoginResponse sendDataLoginResponse = await _clearSaleProxy.SendDataLoginAsync (sendDataLoginRequest);
             return sendDataLoginResponse;

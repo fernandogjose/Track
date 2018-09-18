@@ -11,7 +11,7 @@ namespace Track.Webapi.Controllers {
     /// <summary>
     /// ClearSale API
     /// </summary>
-    [Route ("api/clearsale")]
+    [Route ("clearsale")]
     public class ClearSaleController : Controller {
 
         private readonly IClearSaleService _clearSaleService;
@@ -33,10 +33,10 @@ namespace Track.Webapi.Controllers {
         /// <returns>Objeto com o status do envio</returns>
         [HttpPost]
         [Route ("sendDataLoginAsync")]
-        [ProducesResponseType(typeof(SendDataLoginResponse), 200)]
+        [ProducesResponseType (typeof (SendDataLoginResponse), 200)]
         public async Task<ActionResult> SendDataLoginAsync ([FromBody] SendDataLoginRequest sendDataLoginRequest) {
             SendDataLoginResponse sendDataLoginResponse = await _clearSaleService.SendDataLoginAsync (sendDataLoginRequest);
-            return this.Ok(sendDataLoginResponse);
+            return this.Ok (sendDataLoginResponse);
         }
 
         /// <summary>
@@ -49,13 +49,13 @@ namespace Track.Webapi.Controllers {
         /// <returns>Objeto com o status do envio</returns>
         [HttpPost]
         [Route ("sendDataAccountCreateAsync")]
-        [ProducesResponseType(typeof(SendDataAccountResponse), 200)]
+        [ProducesResponseType (typeof (SendDataAccountResponse), 200)]
         public async Task<ActionResult> SendDataAccountCreateAsync ([FromBody] SendDataAccountRequest sendDataAccountRequest) {
             SendDataAccountResponse sendDataAccountResponse = await _clearSaleService.SendDataAccountCreateAsync (sendDataAccountRequest);
-            return this.Ok(sendDataAccountResponse);
+            return this.Ok (sendDataAccountResponse);
         }
 
-         /// <summary>
+        /// <summary>
         /// Envia os dados do login para o ClearSale
         /// </summary>
         /// <param name="sendDataAccountRequest">Objeto com os dados do usuário</param>
@@ -65,12 +65,11 @@ namespace Track.Webapi.Controllers {
         /// <returns>Objeto com o status do envio</returns>
         [HttpPost]
         [Route ("sendDataAccountUpdateAsync")]
-        [ProducesResponseType(typeof(SendDataAccountResponse), 200)]
+        [ProducesResponseType (typeof (SendDataAccountResponse), 200)]
         public async Task<ActionResult> SendDataAccountUpdateAsync ([FromBody] SendDataAccountRequest sendDataAccountRequest) {
             SendDataAccountResponse sendDataAccountResponse = await _clearSaleService.SendDataAccountUpdateAsync (sendDataAccountRequest);
-            return this.Ok(sendDataAccountResponse);
+            return this.Ok (sendDataAccountResponse);
         }
-
 
         /// <summary>
         /// Envia os dados do recuperar senha
@@ -81,11 +80,18 @@ namespace Track.Webapi.Controllers {
         /// <response code="500">Erro inesperado.</response>
         /// <returns>Objeto com o status do envio</returns>
         [HttpPost]
-        [Route ("sendDataAccountAsync")]
-        [ProducesResponseType(typeof(SendDataResetPasswordResponse), 200)]
+        [Route ("SendDataResetPassword")]
+        [ProducesResponseType (typeof (SendDataResetPasswordResponse), 200)]
         public async Task<ActionResult> SendDataAccountAsync ([FromBody] SendDataResetPasswordRequest sendDataResetPasswordRequest) {
             SendDataResetPasswordResponse sendDataResetPasswordResponse = await _clearSaleService.SendDataResetPasswordAsync (sendDataResetPasswordRequest);
-            return this.Ok(sendDataResetPasswordResponse);
-        }        
+            return this.Ok (sendDataResetPasswordResponse);
+        }
+
+        [HttpGet]
+        [Route ("teste")]
+        [ProducesResponseType (typeof (SendDataResetPasswordResponse), 200)]
+        public ActionResult Teste () {
+            return this.Ok ("sucesso");
+        }
     }
 }
