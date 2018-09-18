@@ -1,6 +1,6 @@
 using System;
 
-namespace Track.Data.Sql.ConfigurationData.Repositories
+namespace Track.Data.Sql
 {
     public class BaseSqlRepository
     {

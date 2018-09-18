@@ -9,6 +9,8 @@ using Track.Domain.ConfigurationData.Interfaces.MongoRepositories;
 using Track.Domain.ConfigurationData.Interfaces.Services;
 using Track.Domain.ConfigurationData.Models;
 using Track.Domain.ConfigurationData.Services;
+using Track.Domain.User.Interfaces.SqlRepositories;
+using Track.Domain.User.Models;
 
 namespace Track.Domain.ClearSale.Services {
     public class ClearSaleService : IClearSaleService {
@@ -17,6 +19,8 @@ namespace Track.Domain.ClearSale.Services {
         private readonly IConfigurationDataMongoRepository _configurationDataMongoRepository;
 
         private readonly IConfigurationDataCacheService _configurationDataCacheService;
+
+        private readonly IUserSqlRepository _userSqlRepository;
 
         private void CanSendDataLoginClearSale () {
 
@@ -60,14 +64,15 @@ namespace Track.Domain.ClearSale.Services {
             }
         }
 
-        public ClearSaleService (IClearSaleProxy clearSaleProxy, IConfigurationDataMongoRepository configurationDataMongoRepository, IConfigurationDataCacheService configurationDataCacheService) {
+        public ClearSaleService (IClearSaleProxy clearSaleProxy, IConfigurationDataMongoRepository configurationDataMongoRepository, IConfigurationDataCacheService configurationDataCacheService, IUserSqlRepository userSqlRepository) {
             _clearSaleProxy = clearSaleProxy;
             _configurationDataMongoRepository = configurationDataMongoRepository;
             _configurationDataCacheService = configurationDataCacheService;
+            _userSqlRepository = userSqlRepository;
         }
 
         public async Task<SendDataLoginResponse> SendDataLoginAsync (SendDataLoginRequest sendDataLoginRequest) {
-            ValidateRequestObject(sendDataLoginRequest);
+            ValidateRequestObject (sendDataLoginRequest);
             ValidateString (sendDataLoginRequest.Code, "Code");
             ValidateString (sendDataLoginRequest.SessionId, "SessionId");
             CanSendDataLoginClearSale ();
@@ -76,7 +81,10 @@ namespace Track.Domain.ClearSale.Services {
         }
 
         public async Task<SendDataResetPasswordResponse> SendDataResetPasswordAsync (SendDataResetPasswordRequest sendDataResetPasswordRequest) {
-            ValidateRequestObject(sendDataResetPasswordRequest);
+            ValidateRequestObject (sendDataResetPasswordRequest);
+
+            sendDataResetPasswordRequest.Code = _userSqlRepository.GetUserIdByEmail (new GetUserIdByEmailRequest (sendDataResetPasswordRequest.Code)).ToString ();
+
             ValidateString (sendDataResetPasswordRequest.Code, "Code");
             ValidateString (sendDataResetPasswordRequest.SessionId, "SessionId");
             CanSendDataResetPasswordClearSale ();
@@ -88,7 +96,7 @@ namespace Track.Domain.ClearSale.Services {
             SendDataAccountResponse sendDataAccountResponse = await _clearSaleProxy.SendDataAccountCreateAsync (sendDataAccountRequest);
             return sendDataAccountResponse;
         }
-        
+
         public async Task<SendDataAccountResponse> SendDataAccountUpdateAsync (SendDataAccountRequest sendDataAccountRequest) {
             SendDataAccountResponse sendDataAccountResponse = await _clearSaleProxy.SendDataAccountUpdateAsync (sendDataAccountRequest);
             return sendDataAccountResponse;
