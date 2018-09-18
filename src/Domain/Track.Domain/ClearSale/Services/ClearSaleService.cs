@@ -81,13 +81,22 @@ namespace Track.Domain.ClearSale.Services {
         }
 
         public async Task<SendDataResetPasswordResponse> SendDataResetPasswordAsync (SendDataResetPasswordRequest sendDataResetPasswordRequest) {
+
+            //--- verifica se o request é válido
             ValidateRequestObject (sendDataResetPasswordRequest);
 
-            sendDataResetPasswordRequest.Code = _userSqlRepository.GetUserIdByEmail (new GetUserIdByEmailRequest (sendDataResetPasswordRequest.Code)).ToString ();
+            //--- recupera o id do cliente pelo email
+            GetUserIdByEmailResponse getUserIdByEmailResponse = _userSqlRepository.GetUserIdByEmail (new GetUserIdByEmailRequest (sendDataResetPasswordRequest.Code));
+            sendDataResetPasswordRequest.Code = getUserIdByEmailResponse.UserId == 0 ? "" : getUserIdByEmailResponse.UserId.ToString ();
 
+            //--- valida se o id do cliente e a sessionid foram passadas
             ValidateString (sendDataResetPasswordRequest.Code, "Code");
             ValidateString (sendDataResetPasswordRequest.SessionId, "SessionId");
+
+            //--- verifica se esta setado para enviar os dados para o clearsale
             CanSendDataResetPasswordClearSale ();
+
+            //--- envia para o clearsale e retorna com o resultado
             SendDataResetPasswordResponse sendDataResetPasswordResponse = await _clearSaleProxy.SendDataResetPasswordAsync (sendDataResetPasswordRequest);
             return sendDataResetPasswordResponse;
         }
