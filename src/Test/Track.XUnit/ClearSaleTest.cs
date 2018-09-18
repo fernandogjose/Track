@@ -72,7 +72,7 @@ namespace Track.XUnit {
         public void MustReturnCustomExceptionWhenKeyCanSendDataLoginClearSaleIsFalse () {
             SendDataLoginRequest sendDataLoginRequest = new SendDataLoginRequest {
                 Code = _name,
-                SessionId = _randomInt.ToString()
+                SessionID = _randomInt.ToString()
             };
 
             const string messageExpected = "O envio de dados para o ClearSale está desligado";
@@ -96,7 +96,7 @@ namespace Track.XUnit {
         public void MustReturnCustomExceptionWhenKeyCanSendDataLoginClearSaleIsNull () {
             SendDataLoginRequest sendDataLoginRequest = new SendDataLoginRequest {
                 Code = _name,
-                SessionId = _email
+                SessionID = _email
             };
 
             const string messageExpected = "O envio de dados para o ClearSale está desligado";
@@ -115,7 +115,7 @@ namespace Track.XUnit {
         public void MustSuccessfullySendDataToClearSale () {
             SendDataLoginRequest sendDataLoginRequest = new SendDataLoginRequest {
                 Code = _name,
-                SessionId = _randomInt.ToString()
+                SessionID = _randomInt.ToString()
             };
 
             const string messageExpected = "O envio de dados para o ClearSale está desligado";
@@ -149,7 +149,7 @@ namespace Track.XUnit {
         [Fact]
         public void MustReturnBadRequestStatusWithTheMessageCodeEObrigatorioWhenCodeIsEmpty () {
             SendDataLoginRequest sendDataLoginRequest = new SendDataLoginRequest {
-                SessionId = _email
+                SessionID = _email
             };
 
             const string messageExpected = "Code é obrigatório";

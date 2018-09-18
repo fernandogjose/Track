@@ -8,6 +8,6 @@ namespace Track.Domain.ClearSale.Models {
         public string Code { get; set; }
 
         [JsonProperty (PropertyName = "sessionID")]
-        public string SessionId { get; set; }
+        public string SessionID { get; set; }
     }
 }
