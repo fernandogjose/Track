@@ -86,7 +86,7 @@ namespace Track.Domain.ClearSale.Services {
             ValidateRequestObject (sendDataResetPasswordRequest);
 
             //--- recupera o id do cliente pelo email
-            GetUserIdByEmailResponse getUserIdByEmailResponse = _userSqlRepository.GetUserIdByEmail (new GetUserIdByEmailRequest (sendDataResetPasswordRequest.Code));
+            GetUserIdByEmailResponse getUserIdByEmailResponse = _userSqlRepository.GetUserIdByEmail (new GetUserIdByEmailRequest (sendDataResetPasswordRequest.Email));
             sendDataResetPasswordRequest.Code = getUserIdByEmailResponse.UserId == 0 ? "" : getUserIdByEmailResponse.UserId.ToString ();
 
             //--- valida se o id do cliente e a sessionid foram passadas

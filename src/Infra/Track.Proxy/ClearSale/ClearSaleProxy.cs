@@ -81,7 +81,7 @@ namespace Track.Proxy.ClearSale {
             string sendDataResetPasswordRequestJson = JsonConvert.SerializeObject (sendDataResetPasswordRequest);
 
             //--- post
-            string sendDataResetPasswordResponseJson = await HttpPostAsync ($"{_urlApiAccountClearSale}/Login", sendDataResetPasswordRequestJson, AuthenticationResponse);
+            string sendDataResetPasswordResponseJson = await HttpPostAsync ($"{_urlApiAccountClearSale}/ResetPassword", sendDataResetPasswordRequestJson, AuthenticationResponse);
 
             //--- deserializa o json para o o objeto de retorno
             SendDataResetPasswordResponse sendDataResetPasswordResponse = JsonConvert.DeserializeObject<SendDataResetPasswordResponse> (sendDataResetPasswordResponseJson);
