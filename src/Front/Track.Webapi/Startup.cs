@@ -57,6 +57,7 @@ namespace Track.Webapi {
             Bootstrap.Configure (services, mongoServerName, mongoDatabase, sqlConnection);
             services.AddCors ();
             services.AddMvc ();
+            services.AddSingleton<IConfiguration> (Configuration);
         }
 
         /// <summary>
@@ -67,8 +68,6 @@ namespace Track.Webapi {
                 app.UseDeveloperExceptionPage ();
             }
 
-            app.UseMiddleware(typeof(ErrorMiddleware));
-
             app.UseCors (
                 options => options
                 .AllowAnyOrigin ()
@@ -76,6 +75,10 @@ namespace Track.Webapi {
                 .AllowAnyMethod ()
             );
 
+            //--- ativando os middleware de error e de validação do token
+            app.UseMiddleware (typeof (ErrorMiddleware));            
+            app.SecurityValidation();
+            
             app.UseMvc ();
 
             //--- Ativando middlewares para uso do Swagger
