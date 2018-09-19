@@ -20,6 +20,7 @@ namespace Track.DI {
 
             //--- Services
             services.AddSingleton<IClearSaleService, ClearSaleService> ();
+            services.AddSingleton<ILogService, LogService> ();
 
             //--- Caches
             services.AddMemoryCache ();
@@ -27,6 +28,7 @@ namespace Track.DI {
 
             //--- Mongo Repositories
             services.AddSingleton<IConfigurationDataMongoRepository> (p => new ConfigurationDataMongoRepository (mongoServerName, mongoDatabase));
+            services.AddSingleton<ILogMongoRepository> (p => new LogMongoRepository (mongoServerName, mongoDatabase));
 
             //--- SQL Repositories
             services.AddSingleton<IConfigurationDataSqlRepository> (p => new ConfigurationDataSqlRepository (sqlConnection));
