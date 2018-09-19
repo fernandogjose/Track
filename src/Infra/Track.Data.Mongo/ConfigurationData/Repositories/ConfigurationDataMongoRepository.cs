@@ -9,7 +9,7 @@ using Newtonsoft.Json;
 using Track.Domain.ConfigurationData.Interfaces.MongoRepositories;
 using Track.Domain.ConfigurationData.Models;
 
-namespace Track.Data.Mongo.Repositories {
+namespace Track.Data.Mongo.ConfigurationData.Repositories {
     public class ConfigurationDataMongoRepository : BaseMongoRepository, IConfigurationDataMongoRepository {
 
         public ConfigurationDataMongoRepository (string serverName, string database) : base (serverName, database) { }

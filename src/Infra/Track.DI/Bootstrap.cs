@@ -1,5 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
-using Track.Data.Mongo.Repositories;
+using Track.Data.Mongo.ConfigurationData.Repositories;
 using Track.Data.Sql.ConfigurationData.Repositories;
 using Track.Data.Sql.User.Repositories;
 using Track.Domain.ClearSale.Interfaces.Proxies;

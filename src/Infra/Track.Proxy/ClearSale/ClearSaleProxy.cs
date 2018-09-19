@@ -29,19 +29,19 @@ namespace Track.Proxy.ClearSale {
 
         private void ValidateConfigValues () {
             if (string.IsNullOrEmpty (_urlApiAccountClearSale)) {
-                throw new CustomException ("A chave urlApiAccountClearSale não está configurada no banco de dados", HttpStatusCode.NotAcceptable);
+                throw new CustomException ("A chave urlApiAccountClearSale não está configurada no banco de dados", HttpStatusCode.NotAcceptable, "Track.Proxy.ClearSale.ClearSaleProxy", "ValidateConfigValues");
             }
 
             if (string.IsNullOrEmpty (_urlApiTokenClearSale)) {
-                throw new CustomException ("A chave urlApiAccountClearSale não está configurada no banco de dados", HttpStatusCode.NotAcceptable);
+                throw new CustomException ("A chave urlApiAccountClearSale não está configurada no banco de dados", HttpStatusCode.NotAcceptable, "Track.Proxy.ClearSale.ClearSaleProxy", "ValidateConfigValues");
             }
 
             if (string.IsNullOrEmpty (_clearSaleLogin)) {
-                throw new CustomException ("A chave urlApiAccountClearSale não está configurada no banco de dados", HttpStatusCode.NotAcceptable);
+                throw new CustomException ("A chave urlApiAccountClearSale não está configurada no banco de dados", HttpStatusCode.NotAcceptable, "Track.Proxy.ClearSale.ClearSaleProxy", "ValidateConfigValues");
             }
 
             if (string.IsNullOrEmpty (_clearSalePassword)) {
-                throw new CustomException ("A chave urlApiAccountClearSale não está configurada no banco de dados", HttpStatusCode.NotAcceptable);
+                throw new CustomException ("A chave urlApiAccountClearSale não está configurada no banco de dados", HttpStatusCode.NotAcceptable, "Track.Proxy.ClearSale.ClearSaleProxy", "ValidateConfigValues");
             }
         }
 

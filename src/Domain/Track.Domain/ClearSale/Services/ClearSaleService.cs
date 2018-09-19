@@ -29,7 +29,7 @@ namespace Track.Domain.ClearSale.Services {
 
             //--- verifica se pode executar, caso contrário retorna um erro de negocio (Não implementado)
             if (podeExecutarClearSale == null || string.IsNullOrEmpty (podeExecutarClearSale.Valor) || podeExecutarClearSale.Valor != "true")
-                throw new CustomException ("O envio de dados para o ClearSale está desligado", HttpStatusCode.NotImplemented);
+                throw new CustomException ("O envio de dados para o ClearSale está desligado", HttpStatusCode.NotImplemented, "Track.Domain.ClearSale.Services.ClearSaleService", "CanSendDataLoginClearSale");
         }
 
         private void CanSendDataResetPasswordClearSale () {
@@ -39,7 +39,7 @@ namespace Track.Domain.ClearSale.Services {
 
             //--- verifica se pode executar, caso contrário retorna um erro de negocio (Não implementado)
             if (podeExecutarClearSale == null || string.IsNullOrEmpty (podeExecutarClearSale.Valor) || podeExecutarClearSale.Valor != "true")
-                throw new CustomException ("O envio de dados para o ClearSale está desligado", HttpStatusCode.NotImplemented);
+                throw new CustomException ("O envio de dados para o ClearSale está desligado", HttpStatusCode.NotImplemented, "Track.Domain.ClearSale.Services.ClearSaleService", "CanSendDataResetPasswordClearSale");
         }
 
         private void CanSendDataAccountClearSale () {
@@ -49,18 +49,18 @@ namespace Track.Domain.ClearSale.Services {
 
             //--- verifica se pode executar, caso contrário retorna um erro de negocio (Não implementado)
             if (podeExecutarClearSale == null || string.IsNullOrEmpty (podeExecutarClearSale.Valor) || podeExecutarClearSale.Valor != "true")
-                throw new CustomException ("O envio de dados para o ClearSale está desligado", HttpStatusCode.NotImplemented);
+                throw new CustomException ("O envio de dados para o ClearSale está desligado", HttpStatusCode.NotImplemented, "Track.Domain.ClearSale.Services.ClearSaleService", "CanSendDataAccountClearSale");
         }
 
         private static void ValidateRequestObject (Object obj) {
             if (obj == null) {
-                throw new CustomException ("Objeto request não pode ser null", HttpStatusCode.BadRequest);
+                throw new CustomException ("Objeto request não pode ser null", HttpStatusCode.BadRequest, "Track.Domain.ClearSale.Services.ClearSaleService", "ValidateRequestObject");
             }
         }
 
         private static void ValidateString (string value, string name) {
             if (string.IsNullOrEmpty (value)) {
-                throw new CustomException ($"{name} é obrigatório", HttpStatusCode.BadRequest);
+                throw new CustomException ($"{name} é obrigatório", HttpStatusCode.BadRequest, "Track.Domain.ClearSale.Services.ClearSaleService", "ValidateString");
             }
         }
 
