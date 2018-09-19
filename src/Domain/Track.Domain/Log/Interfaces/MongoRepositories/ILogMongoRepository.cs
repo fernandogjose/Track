@@ -5,6 +5,6 @@ namespace Track.Domain.ConfigurationData.Interfaces.MongoRepositories
 {
     public interface ILogMongoRepository 
     {
-        void AddAsync (LogRequest logRequest);
+        Task AddAsync (LogRequest logRequest);
     }
 }

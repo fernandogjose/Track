@@ -34,7 +34,7 @@ namespace Track.Webapi.Middlewares {
                 method = customException.Method;
             }
 
-            //--- Fernando - Logar a Exception no MongoDB
+            //--- Logar a Exception no MongoDB
             LogRequest logRequest = new LogRequest {
                 StatusCode = StatusCode.Error,
                 LogDate = DateTime.Now,
@@ -42,7 +42,7 @@ namespace Track.Webapi.Middlewares {
                 NamespaceClass = namespaceClass,
                 Method = method,
                 Message = exception.Message,
-                InnerException = exception.InnerException != null?exception.InnerException.Message: ""
+                InnerException = exception.InnerException != null ? exception.InnerException.Message : ""
             };
 
             _logService.AddAsync (logRequest);

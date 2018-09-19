@@ -14,10 +14,10 @@ namespace Track.Data.Mongo.ConfigurationData.Repositories {
 
         public LogMongoRepository (string serverName, string database) : base (serverName, database) { }
         
-        public void AddAsync (LogRequest logRequest) {
+        public async Task AddAsync (LogRequest logRequest) {
             IMongoCollection<BsonDocument> collection = _database.GetCollection<BsonDocument> ("LogTrackApi");
             BsonDocument configurationDataBsonDocument = logRequest.ToBsonDocument ();
-            collection.InsertOne (logRequest.ToBsonDocument ());
+            await collection.InsertOneAsync (logRequest.ToBsonDocument ());
         }
     }
 }

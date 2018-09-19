@@ -16,9 +16,9 @@ namespace Track.Domain.ConfigurationData.Services {
             _logMongoRepository = logMongoRepository;
         }
 
-        public void AddAsync(LogRequest logRequest)
+        public async Task AddAsync(LogRequest logRequest)
         {
-            _logMongoRepository.AddAsync(logRequest);
+            await _logMongoRepository.AddAsync(logRequest);
         }
     }
 }
