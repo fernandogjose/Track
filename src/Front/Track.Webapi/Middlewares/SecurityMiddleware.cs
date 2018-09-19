@@ -15,6 +15,12 @@ namespace Track.Webapi.Middlewares {
 
         private readonly IConfiguration _configuration;
 
+        private static string DecodeToken (string value) {
+            byte[] byteToken = System.Convert.FromBase64String (value);
+            string response = System.Text.Encoding.UTF8.GetString (byteToken);
+            return response;
+        }
+
         /// <summary>
         /// Construtor
         /// </summary>
@@ -36,9 +42,11 @@ namespace Track.Webapi.Middlewares {
                 return;
             }
 
-            //--- valida se o token esta ativo
-            string tokenApi = _configuration.GetValue<string> ("Security:Token");
-            if (string.IsNullOrEmpty (tokenApi) || tokenApi != tokenRequest) {
+            string tokenRequestDecoded = DecodeToken(tokenRequest[0]);
+
+            //--- valida se o token esta ativo, aqui a gente precisa validar se a data não expirou
+            //--- temporariamente fica assim
+            if (tokenRequestDecoded != "meuteste") {
                 context.Response.StatusCode = 401;
                 await context.Response.WriteAsync ("token inválido");
                 return;
