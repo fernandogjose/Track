@@ -37,6 +37,7 @@ namespace Track.Webapi.Middlewares {
             //--- Fernando - Logar a Exception no MongoDB
             LogRequest logRequest = new LogRequest {
                 StatusCode = StatusCode.Error,
+                LogDate = DateTime.Now,
                 HttpStatusCode = code.ToString (),
                 NamespaceClass = namespaceClass,
                 Method = method,

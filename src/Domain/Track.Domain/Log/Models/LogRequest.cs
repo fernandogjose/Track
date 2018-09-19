@@ -15,5 +15,7 @@ namespace Track.Domain.ConfigurationData.Models {
         public string Method { get; set; }
 
         public string NamespaceClass { get; set; }
+
+        public DateTime LogDate {get; set;}
     }
 }
