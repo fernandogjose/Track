@@ -43,7 +43,8 @@ namespace Track.DI {
             Configuration clearSalePassword = _configurationDataCacheService.GetByKey ("ClearSalePassword");
 
             //--- Proxies
-            services.AddSingleton<IClearSaleProxy> (p => new ClearSaleProxy (urlApiAccountClearSale.Valor, urlApiTokenClearSale.Valor, clearSaleLogin.Valor, clearSalePassword.Valor));
+            var logService = servicesCollection.GetService<ILogService> ();
+            services.AddSingleton<IClearSaleProxy> (p => new ClearSaleProxy (urlApiAccountClearSale.Valor, urlApiTokenClearSale.Valor, clearSaleLogin.Valor, clearSalePassword.Valor, logService));
         }
     }
 }

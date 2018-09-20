@@ -4,7 +4,7 @@ using Track.Domain.Log.Enums;
 namespace Track.Domain.ConfigurationData.Models {
     public class LogRequest {
 
-        public StatusCode StatusCode { get; set; }
+        public string StatusCode { get; set; }
 
         public string HttpStatusCode { get; set; }
 

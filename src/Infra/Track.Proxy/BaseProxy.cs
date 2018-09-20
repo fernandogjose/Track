@@ -1,3 +1,4 @@
+using System;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -5,10 +6,14 @@ using System.Text;
 using System.Threading.Tasks;
 using Track.Domain.ClearSale.Models;
 using Track.Domain.Common.Exceptions;
+using Track.Domain.ConfigurationData.Interfaces.Services;
+using Track.Domain.ConfigurationData.Models;
+using Track.Domain.Log.Enums;
 
 namespace Track.Proxy {
 
     public class BaseProxy {
+        private readonly ILogService _logService;
 
         private HttpClient GetHeader (AuthenticationResponse authenticationResponse) {
             HttpClient client = new HttpClient ();
@@ -20,10 +25,31 @@ namespace Track.Proxy {
             return client;
         }
 
-        public async Task<string> HttpPostAsync (string url, string request, AuthenticationResponse authenticationResponse) {
+        public BaseProxy (ILogService logService) {
+            _logService = logService;
+        }
 
+        private async Task LogRequest (string url, string request, string method) {
+            LogRequest logRequest = new LogRequest {
+                StatusCode = StatusCode.Info.ToString(),
+                Message = $"Url: {url} - Request: {request}",
+                Method = method,
+                NamespaceClass = "Track.Proxy.BaseProxy",
+                LogDate = DateTime.Now
+            };
+
+            await _logService.AddAsync (logRequest);
+        }
+
+        public async Task<string> HttpPostAsync (string url, string request, AuthenticationResponse authenticationResponse, string method) {
+
+            //--- loga a requisição
+            await LogRequest (url, request, method);
+
+            //--- monta o header
             HttpClient client = GetHeader (authenticationResponse);
 
+            //--- faz a chamada da api por post
             var result = await client.PostAsync (url, new StringContent (request, Encoding.UTF8, "application/json"));
             var contents = await result.Content.ReadAsStringAsync ();
 
@@ -35,12 +61,22 @@ namespace Track.Proxy {
             return contents;
         }
 
-        public async Task<string> HttpPutAsync (string url, string request, AuthenticationResponse authenticationResponse) {
+        public async Task<string> HttpPutAsync (string url, string request, AuthenticationResponse authenticationResponse, string method) {
 
+            //--- loga a requisição
+            await LogRequest (url, request, method);
+
+            //--- monta o header
             HttpClient client = GetHeader (authenticationResponse);
 
+            //--- faz a chamada da api por put
             var result = await client.PutAsync (url, new StringContent (request, Encoding.UTF8, "application/json"));
             var contents = await result.Content.ReadAsStringAsync ();
+
+            //--- loga se não retornar nada na requisição
+            if (string.IsNullOrEmpty (contents)) {
+                throw new CustomException ("O serviço na api da clearsale esta com erro, verificar o problema com a clearsale", HttpStatusCode.InternalServerError, "Track.Proxy.BaseProxy", "HttpPostAsync");
+            }
 
             return contents;
         }
