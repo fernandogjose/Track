@@ -1,8 +1,11 @@
+using System;
+using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Primitives;
+using Track.Domain.Common.Exceptions;
 
 namespace Track.Webapi.Middlewares {
 
@@ -39,17 +42,18 @@ namespace Track.Webapi.Middlewares {
             if (!context.Request.Headers.TryGetValue ("token", out tokenRequest)) {
                 context.Response.StatusCode = 400;
                 await context.Response.WriteAsync ("token não encontrado");
-                return;
+                throw new CustomException ("token não encontrado", HttpStatusCode.Unauthorized, "Track.Webapi.Middlewares.SecurityMiddleware", "Invoke");
             }
 
-            string tokenRequestDecoded = DecodeToken(tokenRequest[0]);
+            string tokenRequestDecoded = DecodeToken (tokenRequest[0]);
+            DateTime tokenRequestDate = new DateTime ();
+            DateTime.TryParse (tokenRequestDecoded, out tokenRequestDate);
 
             //--- valida se o token esta ativo, aqui a gente precisa validar se a data não expirou
-            //--- temporariamente fica assim
-            if (tokenRequestDecoded != "meuteste") {
+            if (tokenRequestDate < DateTime.Now.AddDays (-1)) {
                 context.Response.StatusCode = 401;
                 await context.Response.WriteAsync ("token inválido");
-                return;
+                throw new CustomException ("token inválido", HttpStatusCode.Unauthorized, "Track.Webapi.Middlewares.SecurityMiddleware", "Invoke");
             }
 
             await _next.Invoke (context);
