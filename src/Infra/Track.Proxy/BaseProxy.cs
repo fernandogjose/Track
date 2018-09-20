@@ -29,10 +29,10 @@ namespace Track.Proxy {
             _logService = logService;
         }
 
-        private async Task LogRequest (string url, string request, string method) {
+        private async Task LogRequest (string url, string request, string method, string tokenApi) {
             LogRequest logRequest = new LogRequest {
-                StatusCode = StatusCode.Info.ToString(),
-                Message = $"Url: {url} - Request: {request}",
+                StatusCode = StatusCode.Info.ToString (),
+                Message = $"Url: {url} - Request: {request} - Token: {tokenApi}",
                 Method = method,
                 NamespaceClass = "Track.Proxy.BaseProxy",
                 LogDate = DateTime.Now
@@ -44,7 +44,7 @@ namespace Track.Proxy {
         public async Task<string> HttpPostAsync (string url, string request, AuthenticationResponse authenticationResponse, string method) {
 
             //--- loga a requisição
-            await LogRequest (url, request, method);
+            await LogRequest (url, request, method, authenticationResponse == null? "GetToken": authenticationResponse.Token);
 
             //--- monta o header
             HttpClient client = GetHeader (authenticationResponse);
@@ -64,7 +64,7 @@ namespace Track.Proxy {
         public async Task<string> HttpPutAsync (string url, string request, AuthenticationResponse authenticationResponse, string method) {
 
             //--- loga a requisição
-            await LogRequest (url, request, method);
+            await LogRequest (url, request, method, authenticationResponse == null? "GetToken": authenticationResponse.Token);
 
             //--- monta o header
             HttpClient client = GetHeader (authenticationResponse);
