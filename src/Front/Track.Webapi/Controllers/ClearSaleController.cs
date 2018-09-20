@@ -86,12 +86,5 @@ namespace Track.Webapi.Controllers {
             SendDataResetPasswordResponse sendDataResetPasswordResponse = await _clearSaleService.SendDataResetPasswordAsync (sendDataResetPasswordRequest);
             return this.Ok (sendDataResetPasswordResponse);
         }
-
-        [HttpGet]
-        [Route ("teste")]
-        [ProducesResponseType (typeof (SendDataResetPasswordResponse), 200)]
-        public ActionResult Teste () {
-            return this.Ok ("sucesso");
-        }
     }
 }

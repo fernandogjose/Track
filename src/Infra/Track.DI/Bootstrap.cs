@@ -1,6 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
-using Track.Data.Mongo.Repositories;
+using Track.Data.Mongo.ConfigurationData.Repositories;
 using Track.Data.Sql.ConfigurationData.Repositories;
+using Track.Data.Sql.User.Repositories;
 using Track.Domain.ClearSale.Interfaces.Proxies;
 using Track.Domain.ClearSale.Interfaces.Services;
 using Track.Domain.ClearSale.Services;
@@ -9,6 +10,7 @@ using Track.Domain.ConfigurationData.Interfaces.Services;
 using Track.Domain.ConfigurationData.Interfaces.SqlRepositories;
 using Track.Domain.ConfigurationData.Models;
 using Track.Domain.ConfigurationData.Services;
+using Track.Domain.User.Interfaces.SqlRepositories;
 using Track.Proxy.ClearSale;
 
 namespace Track.DI {
@@ -18,6 +20,7 @@ namespace Track.DI {
 
             //--- Services
             services.AddSingleton<IClearSaleService, ClearSaleService> ();
+            services.AddSingleton<ILogService, LogService> ();
 
             //--- Caches
             services.AddMemoryCache ();
@@ -25,9 +28,11 @@ namespace Track.DI {
 
             //--- Mongo Repositories
             services.AddSingleton<IConfigurationDataMongoRepository> (p => new ConfigurationDataMongoRepository (mongoServerName, mongoDatabase));
+            services.AddSingleton<ILogMongoRepository> (p => new LogMongoRepository (mongoServerName, mongoDatabase));
 
             //--- SQL Repositories
             services.AddSingleton<IConfigurationDataSqlRepository> (p => new ConfigurationDataSqlRepository (sqlConnection));
+            services.AddSingleton<IUserSqlRepository> (p => new UserSqlRepository (sqlConnection));
 
             //--- Obter chaves de configuração
             var servicesCollection = services.BuildServiceProvider ();

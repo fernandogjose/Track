@@ -5,7 +5,6 @@ using Bogus;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
-using Track.Data.Mongo.Repositories;
 using Track.Data.Sql.ConfigurationData.Repositories;
 using Track.Domain.ClearSale.Interfaces.Proxies;
 using Track.Domain.ClearSale.Interfaces.Services;

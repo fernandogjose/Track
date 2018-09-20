@@ -29,19 +29,19 @@ namespace Track.Proxy.ClearSale {
 
         private void ValidateConfigValues () {
             if (string.IsNullOrEmpty (_urlApiAccountClearSale)) {
-                throw new CustomException ("A chave urlApiAccountClearSale não está configurada no banco de dados", HttpStatusCode.NotAcceptable);
+                throw new CustomException ("A chave urlApiAccountClearSale não está configurada no banco de dados", HttpStatusCode.NotAcceptable, "Track.Proxy.ClearSale.ClearSaleProxy", "ValidateConfigValues");
             }
 
             if (string.IsNullOrEmpty (_urlApiTokenClearSale)) {
-                throw new CustomException ("A chave urlApiAccountClearSale não está configurada no banco de dados", HttpStatusCode.NotAcceptable);
+                throw new CustomException ("A chave urlApiAccountClearSale não está configurada no banco de dados", HttpStatusCode.NotAcceptable, "Track.Proxy.ClearSale.ClearSaleProxy", "ValidateConfigValues");
             }
 
             if (string.IsNullOrEmpty (_clearSaleLogin)) {
-                throw new CustomException ("A chave urlApiAccountClearSale não está configurada no banco de dados", HttpStatusCode.NotAcceptable);
+                throw new CustomException ("A chave urlApiAccountClearSale não está configurada no banco de dados", HttpStatusCode.NotAcceptable, "Track.Proxy.ClearSale.ClearSaleProxy", "ValidateConfigValues");
             }
 
             if (string.IsNullOrEmpty (_clearSalePassword)) {
-                throw new CustomException ("A chave urlApiAccountClearSale não está configurada no banco de dados", HttpStatusCode.NotAcceptable);
+                throw new CustomException ("A chave urlApiAccountClearSale não está configurada no banco de dados", HttpStatusCode.NotAcceptable, "Track.Proxy.ClearSale.ClearSaleProxy", "ValidateConfigValues");
             }
         }
 
@@ -81,7 +81,7 @@ namespace Track.Proxy.ClearSale {
             string sendDataResetPasswordRequestJson = JsonConvert.SerializeObject (sendDataResetPasswordRequest);
 
             //--- post
-            string sendDataResetPasswordResponseJson = await HttpPostAsync ($"{_urlApiAccountClearSale}/Login", sendDataResetPasswordRequestJson, AuthenticationResponse);
+            string sendDataResetPasswordResponseJson = await HttpPostAsync ($"{_urlApiAccountClearSale}/ResetPassword", sendDataResetPasswordRequestJson, AuthenticationResponse);
 
             //--- deserializa o json para o o objeto de retorno
             SendDataResetPasswordResponse sendDataResetPasswordResponse = JsonConvert.DeserializeObject<SendDataResetPasswordResponse> (sendDataResetPasswordResponseJson);

@@ -7,7 +7,7 @@ namespace Track.Domain.User.Models {
 
         public GetUserIdByEmailRequest (string email) {
             if (string.IsNullOrEmpty (email)) {
-                throw new CustomException ($"e-mail é obrigatório", HttpStatusCode.BadRequest);
+                throw new CustomException ($"e-mail é obrigatório", HttpStatusCode.BadRequest, "Track.Domain.User.Models.GetUserIdByEmailRequest", "Constructor");
             }
 
             Email = email;
