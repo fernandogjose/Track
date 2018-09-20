@@ -80,9 +80,9 @@ namespace Track.Webapi.Controllers {
         /// <response code="500">Erro inesperado.</response>
         /// <returns>Objeto com o status do envio</returns>
         [HttpPost]
-        [Route ("SendDataResetPassword")]
+        [Route ("SendDataResetPasswordAsync")]
         [ProducesResponseType (typeof (SendDataResetPasswordResponse), 200)]
-        public async Task<ActionResult> SendDataAccountAsync ([FromBody] SendDataResetPasswordRequest sendDataResetPasswordRequest) {
+        public async Task<ActionResult> SendDataResetPasswordAsync ([FromBody] SendDataResetPasswordRequest sendDataResetPasswordRequest) {
             SendDataResetPasswordResponse sendDataResetPasswordResponse = await _clearSaleService.SendDataResetPasswordAsync (sendDataResetPasswordRequest);
             return this.Ok (sendDataResetPasswordResponse);
         }
