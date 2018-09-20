@@ -5,8 +5,10 @@ namespace Track.Domain.ClearSale.Models {
 
     public class SendDataResetPasswordRequest {
 
-        [JsonProperty (PropertyName = "email")]
         public string Email { get; set; }
+    }
+
+    public class SendDataResetPasswordClearSaleRequest {
 
         [JsonProperty (PropertyName = "code")]
         public string Code { get; set; }

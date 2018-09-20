@@ -86,18 +86,23 @@ namespace Track.Domain.ClearSale.Services {
             ValidateRequestObject (sendDataResetPasswordRequest);
 
             //--- recupera o id do cliente pelo email
-            GetUserIdByEmailResponse getUserIdByEmailResponse = _userSqlRepository.GetUserIdByEmail (new GetUserIdByEmailRequest (sendDataResetPasswordRequest.Email));
-            sendDataResetPasswordRequest.Code = getUserIdByEmailResponse.UserId == 0 ? "" : getUserIdByEmailResponse.UserId.ToString ();
-
+            GetUserIdAndSessionIdByEmailResponse getUserIdAndSessionIdByEmailResponse = _userSqlRepository.GetUserIdAndSessionIdByEmail (new GetUserIdAndSessionIdByEmailRequest (sendDataResetPasswordRequest.Email));
+            
+            //--- cria o objeto de request para a api da clearsale
+            SendDataResetPasswordClearSaleRequest sendDataResetPasswordClearSaleRequest = new SendDataResetPasswordClearSaleRequest{
+                Code = getUserIdAndSessionIdByEmailResponse.UserId == 0 ? "" : getUserIdAndSessionIdByEmailResponse.UserId.ToString (),
+                SessionId = getUserIdAndSessionIdByEmailResponse.SessionId
+            };
+            
             //--- valida se o id do cliente e a sessionid foram passadas
-            ValidateString (sendDataResetPasswordRequest.Code, "Code");
-            ValidateString (sendDataResetPasswordRequest.SessionId, "SessionId");
+            ValidateString (sendDataResetPasswordClearSaleRequest.Code, "Code");
+            ValidateString (sendDataResetPasswordClearSaleRequest.SessionId, "SessionId");
 
             //--- verifica se esta setado para enviar os dados para o clearsale
             CanSendDataResetPasswordClearSale ();
 
             //--- envia para o clearsale e retorna com o resultado
-            SendDataResetPasswordResponse sendDataResetPasswordResponse = await _clearSaleProxy.SendDataResetPasswordAsync (sendDataResetPasswordRequest);
+            SendDataResetPasswordResponse sendDataResetPasswordResponse = await _clearSaleProxy.SendDataResetPasswordAsync (sendDataResetPasswordClearSaleRequest);
             return sendDataResetPasswordResponse;
         }
 

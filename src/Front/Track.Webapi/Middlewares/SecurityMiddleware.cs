@@ -45,11 +45,12 @@ namespace Track.Webapi.Middlewares {
                 throw new CustomException ("token não encontrado", HttpStatusCode.Unauthorized, "Track.Webapi.Middlewares.SecurityMiddleware", "Invoke");
             }
 
+            //--- Decodifica a data que esta vindo no headers como token
             string tokenRequestDecoded = DecodeToken (tokenRequest[0]);
             DateTime tokenRequestDate = new DateTime ();
             DateTime.TryParse (tokenRequestDecoded, out tokenRequestDate);
 
-            //--- valida se o token esta ativo, aqui a gente precisa validar se a data não expirou
+            //--- valida se o token esta ativo, se a data não expirou
             if (tokenRequestDate < DateTime.Now.AddDays (-1)) {
                 context.Response.StatusCode = 401;
                 await context.Response.WriteAsync ("token inválido");

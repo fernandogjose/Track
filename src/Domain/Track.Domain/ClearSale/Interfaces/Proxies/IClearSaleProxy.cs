@@ -7,7 +7,7 @@ namespace Track.Domain.ClearSale.Interfaces.Proxies {
 
         Task<SendDataLoginResponse> SendDataLoginAsync (SendDataLoginRequest sendDataLoginRequest);
 
-        Task<SendDataResetPasswordResponse> SendDataResetPasswordAsync (SendDataResetPasswordRequest sendDataResetPasswordRequest);
+        Task<SendDataResetPasswordResponse> SendDataResetPasswordAsync (SendDataResetPasswordClearSaleRequest sendDataResetPasswordClearSaleRequest);
 
         Task<SendDataAccountResponse> SendDataAccountCreateAsync (SendDataAccountRequest sendDataAccountRequest);
 
