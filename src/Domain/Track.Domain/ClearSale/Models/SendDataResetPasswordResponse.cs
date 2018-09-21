@@ -8,7 +8,7 @@ namespace Track.Domain.ClearSale.Models {
         public string RequestId { get; set; }
 
         [JsonProperty (PropertyName = "account")]
-        public List<SendDataAccountPhones> Account { get; set; }
+        public SendDataResetPasswordAccount Account { get; set; }
     }
 
     public class SendDataResetPasswordAccount {
