@@ -42,6 +42,8 @@ namespace Track.Webapi {
             string mongoServerName = Configuration["DataMongo:DefaultConnection:ServerName"];
             string mongoDatabase = Configuration["DataMongo:DefaultConnection:Database"];
             string sqlConnection = Configuration["SQL:DefaultConnection:Database"];
+            bool isDebug = true;
+            bool.TryParse(Configuration["IsDebug"], out isDebug);
 
             //--- Configurar o serviço de documentação do Swagger
             services.AddSwaggerGen (c => {
@@ -54,7 +56,7 @@ namespace Track.Webapi {
                 c.IncludeXmlComments (caminhoXmlDoc);
             });
 
-            Bootstrap.Configure (services, mongoServerName, mongoDatabase, sqlConnection);
+            Bootstrap.Configure (services, mongoServerName, mongoDatabase, sqlConnection, isDebug);
             services.AddCors ();
             services.AddMvc ();
             services.AddSingleton<IConfiguration> (Configuration);

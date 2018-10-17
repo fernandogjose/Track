@@ -45,7 +45,7 @@ namespace Track.Proxy.ClearSale {
             }
         }
 
-        public ClearSaleProxy (string urlApiAccountClearSale, string urlApiTokenClearSale, string clearSaleLogin, string clearSalePassword, ILogService logService) : base (logService) {
+        public ClearSaleProxy (string urlApiAccountClearSale, string urlApiTokenClearSale, string clearSaleLogin, string clearSalePassword, ILogService logService, bool isDebug) : base (logService, isDebug) {
             _urlApiAccountClearSale = urlApiAccountClearSale;
             _urlApiTokenClearSale = urlApiTokenClearSale;
             _clearSaleLogin = clearSaleLogin;

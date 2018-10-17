@@ -16,7 +16,7 @@ using Track.Proxy.ClearSale;
 namespace Track.DI {
     public class Bootstrap {
 
-        public static void Configure (IServiceCollection services, string mongoServerName, string mongoDatabase, string sqlConnection) {
+        public static void Configure (IServiceCollection services, string mongoServerName, string mongoDatabase, string sqlConnection, bool isDebug) {
 
             //--- Services
             services.AddSingleton<IClearSaleService, ClearSaleService> ();
@@ -44,7 +44,7 @@ namespace Track.DI {
 
             //--- Proxies
             var logService = servicesCollection.GetService<ILogService> ();
-            services.AddSingleton<IClearSaleProxy> (p => new ClearSaleProxy (urlApiAccountClearSale.Valor, urlApiTokenClearSale.Valor, clearSaleLogin.Valor, clearSalePassword.Valor, logService));
+            services.AddSingleton<IClearSaleProxy> (p => new ClearSaleProxy (urlApiAccountClearSale.Valor, urlApiTokenClearSale.Valor, clearSaleLogin.Valor, clearSalePassword.Valor, logService, isDebug));
         }
     }
 }

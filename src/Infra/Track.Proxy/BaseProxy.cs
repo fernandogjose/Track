@@ -15,8 +15,23 @@ namespace Track.Proxy {
     public class BaseProxy {
         private readonly ILogService _logService;
 
+        private readonly bool _isDebug;
+
         private HttpClient GetHeader (AuthenticationResponse authenticationResponse) {
             HttpClient client = new HttpClient ();
+
+            if (_isDebug) {
+                HttpClientHandler handler = new HttpClientHandler () {
+                    Proxy = new WebProxy ("http://10.128.131.16:3128"),
+                    UseProxy = true,
+                };
+
+                client = new HttpClient (handler);
+
+                _logService.AddAsync (new LogRequest { Message = "debug = true" });
+            } else {
+                _logService.AddAsync (new LogRequest { Message = "debug = false" });
+            }
 
             if (authenticationResponse != null && !string.IsNullOrEmpty (authenticationResponse.Token)) {
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue ("Bearer", authenticationResponse.Token);
@@ -25,8 +40,9 @@ namespace Track.Proxy {
             return client;
         }
 
-        public BaseProxy (ILogService logService) {
+        public BaseProxy (ILogService logService, bool isDebug) {
             _logService = logService;
+            _isDebug = isDebug;
         }
 
         private async Task LogRequest (string url, string request, string method, string tokenApi) {
