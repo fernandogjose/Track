@@ -33,15 +33,15 @@ namespace Track.Proxy.ClearSale {
             }
 
             if (string.IsNullOrEmpty (_urlApiTokenClearSale)) {
-                throw new CustomException ("A chave urlApiAccountClearSale não está configurada no banco de dados", HttpStatusCode.NotAcceptable, "Track.Proxy.ClearSale.ClearSaleProxy", "ValidateConfigValues");
+                throw new CustomException ("A chave urlApiTokenClearSale não está configurada no banco de dados", HttpStatusCode.NotAcceptable, "Track.Proxy.ClearSale.ClearSaleProxy", "ValidateConfigValues");
             }
 
             if (string.IsNullOrEmpty (_clearSaleLogin)) {
-                throw new CustomException ("A chave urlApiAccountClearSale não está configurada no banco de dados", HttpStatusCode.NotAcceptable, "Track.Proxy.ClearSale.ClearSaleProxy", "ValidateConfigValues");
+                throw new CustomException ("A chave ClearSaleLogin não está configurada no banco de dados", HttpStatusCode.NotAcceptable, "Track.Proxy.ClearSale.ClearSaleProxy", "ValidateConfigValues");
             }
 
             if (string.IsNullOrEmpty (_clearSalePassword)) {
-                throw new CustomException ("A chave urlApiAccountClearSale não está configurada no banco de dados", HttpStatusCode.NotAcceptable, "Track.Proxy.ClearSale.ClearSaleProxy", "ValidateConfigValues");
+                throw new CustomException ("A chave ClearSalePassword não está configurada no banco de dados", HttpStatusCode.NotAcceptable, "Track.Proxy.ClearSale.ClearSaleProxy", "ValidateConfigValues");
             }
         }
 
@@ -141,7 +141,12 @@ namespace Track.Proxy.ClearSale {
             string authenticateRequestJson = JsonConvert.SerializeObject (authenticateRequest);
             string authenticationResponse = await HttpPostAsync (_urlApiTokenClearSale, authenticateRequestJson, AuthenticationResponse, "GetToken");
 
-            AuthenticationResponse = JsonConvert.DeserializeObject<AuthenticationResponse> (authenticationResponse);
+            if ((authenticationResponse.StartsWith ("{") && authenticationResponse.EndsWith ("}")) ||
+                (authenticationResponse.StartsWith ("[") && authenticationResponse.EndsWith ("]"))) {
+                AuthenticationResponse = JsonConvert.DeserializeObject<AuthenticationResponse> (authenticationResponse);
+            } else {
+                throw new Exception(authenticationResponse);
+            }
         }
     }
 }

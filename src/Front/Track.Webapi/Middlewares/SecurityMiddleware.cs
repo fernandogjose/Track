@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Primitives;
 using Track.Domain.Common.Exceptions;
+using Track.Domain.Common.Interfaces.Services;
 using Track.Domain.ConfigurationData.Interfaces.Services;
 using Track.Domain.ConfigurationData.Models;
 using Track.Domain.Log.Enums;
@@ -21,7 +22,7 @@ namespace Track.Webapi.Middlewares {
 
         private readonly IConfiguration _configuration;
 
-        private readonly ILogService _logService;
+        private readonly ISecurityService _securityService;
 
         private static string DecodeToken (string value) {
             byte[] byteToken = System.Convert.FromBase64String (value);
@@ -32,21 +33,16 @@ namespace Track.Webapi.Middlewares {
         /// <summary>
         /// Construtor
         /// </summary>
-        public SecurityMiddleware (RequestDelegate next, IConfiguration configuration, ILogService logService) {
+        public SecurityMiddleware (RequestDelegate next, IConfiguration configuration, ISecurityService securityService) {
             _next = next;
             _configuration = configuration;
-            _logService = logService;
+            _securityService = securityService;
         }
 
         /// <summary>
         /// Invoke
         /// </summary>
         public async Task Invoke (HttpContext context) {
-
-            await _logService.AddAsync (new LogRequest {
-                StatusCode = StatusCode.Info.ToString(),
-                Message = "Iniciou a aplicação"
-            });
 
             //--- valida se o token esta sendo passado no headers
             StringValues tokenRequest;
@@ -68,10 +64,8 @@ namespace Track.Webapi.Middlewares {
                 throw new CustomException ("token inválido", HttpStatusCode.Unauthorized, "Track.Webapi.Middlewares.SecurityMiddleware", "Invoke");
             }
 
-            await _logService.AddAsync (new LogRequest {
-                StatusCode = StatusCode.Info.ToString(),
-                Message = "Subiu a aplicação com sucesso na validação do token"
-            });
+            //--- verifica se este token já foi usado, após o primeiro uso ele é invalidado
+
 
             await _next.Invoke (context);
         }
