@@ -86,5 +86,19 @@ namespace Track.Webapi.Controllers {
             SendDataResetPasswordResponse sendDataResetPasswordResponse = await _clearSaleService.SendDataResetPasswordAsync (sendDataResetPasswordRequest);
             return this.Ok (sendDataResetPasswordResponse);
         }
+
+        /// <summary>
+        /// Método para testar o funcionando da api
+        /// </summary>
+        /// <response code="200">Objeto com o status do envio</response>
+        /// <response code="400">Solicitação inválida.</response>
+        /// <response code="500">Erro inesperado.</response>
+        /// <returns>Mensagem de sucesso</returns>
+        [HttpGet]
+        [Route ("TesteApi ")]
+        [ProducesResponseType (typeof (SendDataResetPasswordResponse), 200)]
+        public ActionResult TesteApi () {
+            return this.Ok ("Api está funcionando");
+        }
     }
 }

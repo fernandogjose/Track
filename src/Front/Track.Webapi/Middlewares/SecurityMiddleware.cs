@@ -22,8 +22,6 @@ namespace Track.Webapi.Middlewares {
 
         private readonly IConfiguration _configuration;
 
-        private readonly ISecurityService _securityService;
-
         private static string DecodeToken (string value) {
             byte[] byteToken = System.Convert.FromBase64String (value);
             string response = System.Text.Encoding.UTF8.GetString (byteToken);
@@ -33,10 +31,9 @@ namespace Track.Webapi.Middlewares {
         /// <summary>
         /// Construtor
         /// </summary>
-        public SecurityMiddleware (RequestDelegate next, IConfiguration configuration, ISecurityService securityService) {
+        public SecurityMiddleware (RequestDelegate next, IConfiguration configuration) {
             _next = next;
             _configuration = configuration;
-            _securityService = securityService;
         }
 
         /// <summary>
