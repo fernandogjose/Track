@@ -95,7 +95,7 @@ namespace Track.Webapi.Controllers {
         /// <response code="500">Erro inesperado.</response>
         /// <returns>Mensagem de sucesso</returns>
         [HttpGet]
-        [Route ("TesteApi ")]
+        [Route ("TesteApi")]
         [ProducesResponseType (typeof (SendDataResetPasswordResponse), 200)]
         public ActionResult TesteApi () {
             return this.Ok ("Api está funcionando");
