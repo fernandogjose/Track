@@ -9,8 +9,6 @@ namespace Track.Data.Sql.User.Repositories
 {
     public class UserSqlRepository : BaseSqlRepository, IUserSqlRepository {
 
-        private string GetByKeySql = "SELECT IdCliente, SessionId FROM Cliente WHERE Email = @Email";
-
         public UserSqlRepository (string connectionString) : base (connectionString) { }
 
         public GetUserIdAndSessionIdByEmailResponse GetUserIdAndSessionIdByEmail(GetUserIdAndSessionIdByEmailRequest getUserIdAndSessionIdByEmailRequest)
@@ -18,10 +16,9 @@ namespace Track.Data.Sql.User.Repositories
             GetUserIdAndSessionIdByEmailResponse getUserIdAndSessionIdByEmailResponse = new GetUserIdAndSessionIdByEmailResponse ();
 
             using (SqlConnection conn = new SqlConnection (GetConnectionString ())) {
-                using (var cmd = new SqlCommand ()) {
+                using (var cmd = new SqlCommand ("GetUserIdAndSessionIdByEmail")) {
                     cmd.Connection = conn;
-                    cmd.CommandText = GetByKeySql;
-                    cmd.CommandType = CommandType.Text;
+                    cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue ("@Email", GetDbValue (getUserIdAndSessionIdByEmailRequest.Email));
 
                     conn.Open ();
