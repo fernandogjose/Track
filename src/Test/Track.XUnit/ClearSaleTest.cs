@@ -6,6 +6,7 @@ using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using Track.Data.Sql.ConfigurationData.Repositories;
+using Track.Data.Sql.User.Repositories;
 using Track.Domain.ClearSale.Interfaces.Proxies;
 using Track.Domain.ClearSale.Interfaces.Services;
 using Track.Domain.ClearSale.Models;
@@ -15,6 +16,7 @@ using Track.Domain.ConfigurationData.Interfaces.MongoRepositories;
 using Track.Domain.ConfigurationData.Interfaces.Services;
 using Track.Domain.ConfigurationData.Interfaces.SqlRepositories;
 using Track.Domain.ConfigurationData.Models;
+using Track.Domain.User.Interfaces.SqlRepositories;
 using Track.Proxy.ClearSale;
 using Xunit;
 
@@ -25,6 +27,8 @@ namespace Track.XUnit {
         private readonly IServiceCollection _serviceCollection;
 
         private readonly Mock<IClearSaleProxy> _clearSaleProxyMock;
+
+        private readonly Mock<IUserSqlRepository> _userSqlRepositoryMock;
 
         private readonly Mock<IConfigurationDataMongoRepository> _configurationDataMongoRepositoryMock;
 
@@ -46,6 +50,7 @@ namespace Track.XUnit {
             _configurationDataMongoRepositoryMock = new Mock<IConfigurationDataMongoRepository> ();
             _configurationDataSqlRepositoryMock = new Mock<IConfigurationDataSqlRepository> ();
             _configurationDataCacheServiceMock = new Mock<IConfigurationDataCacheService> ();
+            _userSqlRepositoryMock = new Mock<IUserSqlRepository> ();
 
             //--- configuração do DI
             _serviceCollection = new ServiceCollection ();
@@ -55,6 +60,7 @@ namespace Track.XUnit {
             _serviceCollection.AddSingleton<IConfigurationDataSqlRepository> (_configurationDataSqlRepositoryMock.Object);
             _serviceCollection.AddSingleton<IConfigurationDataCacheService> (_configurationDataCacheServiceMock.Object);
             _serviceCollection.AddSingleton<IClearSaleService, ClearSaleService> ();
+            _serviceCollection.AddSingleton<IUserSqlRepository> (_userSqlRepositoryMock.Object);
 
             //--- obter o service
             var services = _serviceCollection.BuildServiceProvider ();
@@ -71,7 +77,7 @@ namespace Track.XUnit {
         public void MustReturnCustomExceptionWhenKeyCanSendDataLoginClearSaleIsFalse () {
             SendDataLoginRequest sendDataLoginRequest = new SendDataLoginRequest {
                 Code = _name,
-                SessionID = _randomInt.ToString()
+                SessionID = _randomInt.ToString ()
             };
 
             const string messageExpected = "O envio de dados para o ClearSale está desligado";
@@ -114,7 +120,7 @@ namespace Track.XUnit {
         public void MustSuccessfullySendDataToClearSale () {
             SendDataLoginRequest sendDataLoginRequest = new SendDataLoginRequest {
                 Code = _name,
-                SessionID = _randomInt.ToString()
+                SessionID = _randomInt.ToString ()
             };
 
             const string messageExpected = "O envio de dados para o ClearSale está desligado";
@@ -180,6 +186,6 @@ namespace Track.XUnit {
             Assert.Equal (response.Result.Message, messageExpected);
             Assert.Equal (HttpStatusCode.BadRequest, response.Result.HttpStatusCode);
         }
-       
+
     }
 }
