@@ -10,6 +10,9 @@ namespace Track.Domain.ClearSale.Models {
 
         [JsonProperty (PropertyName = "account")]
         public SendDataAccount Account { get; set; }
+
+        [JsonProperty (PropertyName = "contents")]
+        public string Contents { get; set; }
     }
 
     public class SendDataAccount {

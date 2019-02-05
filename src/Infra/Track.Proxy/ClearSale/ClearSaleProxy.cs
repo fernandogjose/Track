@@ -63,10 +63,10 @@ namespace Track.Proxy.ClearSale {
             string sendDataLoginRequestJson = JsonConvert.SerializeObject (sendDataLoginRequest);
 
             //--- post
-            string sendDataLoginResponseJson = await HttpPostAsync ($"{_urlApiAccountClearSale}/Login", sendDataLoginRequestJson, AuthenticationResponse, "SendDataLoginAsync");
+            BaseResponse sendDataLoginResponseJson = await HttpPostAsync ($"{_urlApiAccountClearSale}/Login", sendDataLoginRequestJson, AuthenticationResponse, "SendDataLoginAsync");
 
             //--- deserializa o json para o o objeto de retorno
-            SendDataLoginResponse sendDataLoginResponse = JsonConvert.DeserializeObject<SendDataLoginResponse> (sendDataLoginResponseJson);
+            SendDataLoginResponse sendDataLoginResponse = JsonConvert.DeserializeObject<SendDataLoginResponse> (sendDataLoginResponseJson.Contents);
 
             //--- retorna 
             return sendDataLoginResponse;
@@ -81,10 +81,10 @@ namespace Track.Proxy.ClearSale {
             string sendDataResetPasswordClearSaleRequestJson = JsonConvert.SerializeObject (sendDataResetPasswordClearSaleRequest);
 
             //--- post
-            string sendDataResetPasswordResponseJson = await HttpPostAsync ($"{_urlApiAccountClearSale}/ResetPassword", sendDataResetPasswordClearSaleRequestJson, AuthenticationResponse, "SendDataResetPasswordAsync");
+            BaseResponse sendDataResetPasswordResponseJson = await HttpPostAsync ($"{_urlApiAccountClearSale}/ResetPassword", sendDataResetPasswordClearSaleRequestJson, AuthenticationResponse, "SendDataResetPasswordAsync");
 
             //--- deserializa o json para o o objeto de retorno
-            SendDataResetPasswordResponse sendDataResetPasswordResponse = JsonConvert.DeserializeObject<SendDataResetPasswordResponse> (sendDataResetPasswordResponseJson);
+            SendDataResetPasswordResponse sendDataResetPasswordResponse = JsonConvert.DeserializeObject<SendDataResetPasswordResponse> (sendDataResetPasswordResponseJson.Contents);
 
             //--- retorna 
             return sendDataResetPasswordResponse;
@@ -99,10 +99,16 @@ namespace Track.Proxy.ClearSale {
             string sendDataAccountRequestJson = JsonConvert.SerializeObject (sendDataAccountRequest);
 
             //--- post
-            string sendDataLoginResponseJson = await HttpPostAsync (_urlApiAccountClearSale, sendDataAccountRequestJson, AuthenticationResponse, "SendDataAccountCreateAsync");
+            BaseResponse sendDataLoginResponseJson = await HttpPostAsync (_urlApiAccountClearSale, sendDataAccountRequestJson, AuthenticationResponse, "SendDataAccountCreateAsync");
 
+            if (!IsResultSuccess(sendDataLoginResponseJson.HttpResponseMessage)) {
+                if(IsExistingAccount(sendDataLoginResponseJson.Contents))
+                {
+                    sendDataLoginResponseJson = await HttpPutAsync (_urlApiAccountClearSale, sendDataAccountRequestJson, AuthenticationResponse, "SendDataAccountUpdateAsync");
+                }
+            }
             //--- deserializa o json para o o objeto de retorno
-            SendDataAccountResponse sendDataAccountResponse = JsonConvert.DeserializeObject<SendDataAccountResponse> (sendDataLoginResponseJson);
+            SendDataAccountResponse sendDataAccountResponse = JsonConvert.DeserializeObject<SendDataAccountResponse> (sendDataLoginResponseJson.Contents);
 
             //--- retorna 
             return sendDataAccountResponse;
@@ -117,10 +123,10 @@ namespace Track.Proxy.ClearSale {
             string sendDataAccountRequestJson = JsonConvert.SerializeObject (sendDataAccountRequest);
 
             //--- post
-            string sendDataLoginResponseJson = await HttpPutAsync (_urlApiAccountClearSale, sendDataAccountRequestJson, AuthenticationResponse, "SendDataAccountUpdateAsync");
+            BaseResponse sendDataLoginResponseJson = await HttpPutAsync (_urlApiAccountClearSale, sendDataAccountRequestJson, AuthenticationResponse, "SendDataAccountUpdateAsync");
 
             //--- deserializa o json para o o objeto de retorno
-            SendDataAccountResponse sendDataAccountResponse = JsonConvert.DeserializeObject<SendDataAccountResponse> (sendDataLoginResponseJson);
+            SendDataAccountResponse sendDataAccountResponse = JsonConvert.DeserializeObject<SendDataAccountResponse> (sendDataLoginResponseJson.Contents);
 
             //--- retorna 
             return sendDataAccountResponse;
@@ -139,14 +145,28 @@ namespace Track.Proxy.ClearSale {
             authenticateRequest.Add ("password", _clearSalePassword);
 
             string authenticateRequestJson = JsonConvert.SerializeObject (authenticateRequest);
-            string authenticationResponse = await HttpPostAsync (_urlApiTokenClearSale, authenticateRequestJson, AuthenticationResponse, "GetToken");
+            BaseResponse authenticationResponse = await HttpPostAsync (_urlApiTokenClearSale, authenticateRequestJson, AuthenticationResponse, "GetToken");
 
-            if ((authenticationResponse.StartsWith ("{") && authenticationResponse.EndsWith ("}")) ||
-                (authenticationResponse.StartsWith ("[") && authenticationResponse.EndsWith ("]"))) {
-                AuthenticationResponse = JsonConvert.DeserializeObject<AuthenticationResponse> (authenticationResponse);
+            if ((authenticationResponse.Contents.StartsWith ("{") && authenticationResponse.Contents.EndsWith ("}")) ||
+                (authenticationResponse.Contents.StartsWith ("[") && authenticationResponse.Contents.EndsWith ("]"))) {
+                AuthenticationResponse = JsonConvert.DeserializeObject<AuthenticationResponse> (authenticationResponse.Contents);
             } else {
-                throw new Exception(authenticationResponse);
+                throw new Exception (authenticationResponse.Contents);
             }
         }
+
+        private bool IsExistingAccount (string contents) {
+            if (contents.Contains ("existing-account"))
+                return true;
+            else
+                return false;
+        }
+        private bool IsResultSuccess (HttpResponseMessage statusResponse) {
+            if ((int)statusResponse.StatusCode == 200)
+                return true;
+            else
+                return false;
+        }
+
     }
 }

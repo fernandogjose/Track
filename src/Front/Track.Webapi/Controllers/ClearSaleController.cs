@@ -52,6 +52,7 @@ namespace Track.Webapi.Controllers {
         [ProducesResponseType (typeof (SendDataAccountResponse), 200)]
         public async Task<ActionResult> SendDataAccountCreateAsync ([FromBody] SendDataAccountRequest sendDataAccountRequest) {
             SendDataAccountResponse sendDataAccountResponse = await _clearSaleService.SendDataAccountCreateAsync (sendDataAccountRequest);
+            
             return this.Ok (sendDataAccountResponse);
         }
 
